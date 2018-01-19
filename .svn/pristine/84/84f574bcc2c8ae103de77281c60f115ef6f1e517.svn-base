@@ -1,0 +1,401 @@
+package com.grouptwo.controllers;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import com.grouptwo.domain.Deferral;
+import com.grouptwo.domain.Module;
+import com.grouptwo.domain.Programme;
+import com.grouptwo.domain.Student;
+import com.grouptwo.service.DeferralDAO;
+import com.grouptwo.service.ModuleDAO;
+import com.grouptwo.service.ProgrammeDAO;
+import com.grouptwo.service.StudentDAO;
+import com.grouptwo.exceptions.FormUploadException;
+
+
+@Controller
+@RequestMapping("/deferral")
+public class DeferralController {
+
+	@Autowired
+	DeferralDAO deferralDAO;
+	@Autowired
+	ModuleDAO moduleDAO;
+	@Autowired
+	ProgrammeDAO programmeDAO;
+	@Autowired
+	StudentDAO studentDAO;
+	@Autowired
+	private ServletContext servletContext;
+
+	
+	/**
+	 * @author Niall McCarthy
+	 * This method will list all deferrals
+	 *
+	 */
+	@RequestMapping(value = "/listall", method = RequestMethod.GET)
+	public String listAll(ModelMap model) {
+		Date date = new java.util.Date();
+		List<Deferral> listDefferals = deferralDAO.listDeferrals();
+		model.addAttribute("deferrals", listDefferals);
+		model.addAttribute("now", date);
+		return "displayDeferrals";
+	}
+	
+	/**
+	 * @author Niall McCarthy
+	 * This method is invoked when the coordinator, confirms the approval on a deferral entry.
+	 *
+	 */
+	@RequestMapping(value = "/listall/{moduleId}/{studentId}", method = RequestMethod.GET)
+	public String listApprovedDeferrals(@PathVariable String moduleId,@PathVariable String studentId, ModelMap model) {
+		Date date = new java.util.Date();
+		deferralDAO.approveModuleDeferral(studentId, moduleId);
+		List<Deferral> listDefferals = deferralDAO.listDeferrals();
+		model.addAttribute("deferrals", listDefferals);
+		model.addAttribute("now", date);
+		return "displayDeferrals";
+	}
+	
+
+	/**
+	 * @author Niall McCarthy
+	 * This method will display a View for the user to enter his/her student Id
+	 *
+	 */
+	@RequestMapping(value = "/advancedlist", method = RequestMethod.GET)
+	public String advancedSearch() {
+		return "displayDeferralsByStudent";
+	}
+
+	/* Once the user enters their student Id, this method will display a
+	*  a list of all the student's deferrals	
+	*/
+	@RequestMapping(value = "/advancedlist/studentId/{studentId}", method = RequestMethod.GET)
+	public String listDeferralsByStudent(@PathVariable String studentId,
+			ModelMap model) {
+		Date date = new java.util.Date();
+		List<Deferral> listDefferals = deferralDAO.listDeferralsByStudent(studentId);
+		model.addAttribute("deferrals", listDefferals);
+		model.addAttribute("now", date);
+		return "displayDeferrals";
+
+	}
+	
+	/**
+	 * @author Niall McCarthy
+	 * These following 3x methods will create a Deferral for a Student's Module
+	 *
+	 */
+	
+	/*This method will display a View for the user to enter his/her student Id*/
+	
+	@RequestMapping(value = "/addModuleDeferralPage1", method = RequestMethod.GET)
+	public String addModuleDeferralPage1(ModelMap model) {
+		List<Module> listModules = moduleDAO.listModules();
+		model.addAttribute("moduleList",listModules );
+		model.addAttribute("deferral", new Deferral());
+		return "newModuleDeferralPage1";
+	}
+	
+	/* Once the user enters their student Id, this method will display 
+	 * the student's details and their corresponding modules.
+	*/	
+	
+	@RequestMapping(value = "/addModuleDeferralPage1", method = RequestMethod.POST)
+	public String displayModuleDeferralPage1(
+			@ModelAttribute("deferral") Deferral deferral,BindingResult result, ModelMap model) {
+
+		if (result.hasErrors()) {
+			return "newModuleDeferralPage1";
+		}
+		
+		//Get the student's FirstName,LastName and Registered Modules
+		String studentId=deferral.getStudentId();
+		List<Module> listStudentModules = moduleDAO.listStudentModules(studentId);
+		Student student=studentDAO.getStudent(studentId);
+		model.addAttribute("studentFirstName",student.getFirstName());
+		model.addAttribute("studentLastName",student.getLastName());
+		model.addAttribute("studentId",studentId);
+		model.addAttribute("moduleList",listStudentModules );
+		model.addAttribute("deferral", deferral);
+		return "newModuleDeferralPage2";
+
+	}
+	
+	/* This method will create the deferral entry for the specfic module.
+	*/	
+	@RequestMapping(value = "/addModuleDeferralPage2", method = RequestMethod.POST)
+	public String displayModuleDeferralPage2(
+			@ModelAttribute("deferral") Deferral deferral,@RequestParam("file") MultipartFile file,
+			BindingResult result, ModelMap model) {
+		
+		int id=0;
+
+		if (result.hasErrors()) {
+			return "/addModuleDeferralPage2";
+		}
+		
+		try {
+			 if (!file.isEmpty()) {
+				 
+				 validateImage(file);
+				 
+		
+		try{
+			/*This is a little trick im using! I need to get the CRN's for the modules.
+			 * However my deferral model doesnt actually contain a CRN  parameter or setter. 
+			 * It does however have a programme Id setter and getter.
+			 * So im using this to pass through my crn value.*/
+		int crnNumber= Integer.parseInt(deferral.getProgrammeId());
+		Module module=moduleDAO.getModuleByName(deferral.getModuleId(), crnNumber);
+		
+		// Create the module deferral
+		id=deferralDAO.createModuleDeferralGetId(deferral.getStudentId(), module.getModuleId(), crnNumber);
+		
+		// Set file path and size
+		 byte[] bytes = file.getBytes(); 
+         File dir = new File(servletContext.getRealPath("/")+"/resources/form/uploadedForms");
+         
+         if (!dir.exists())
+             dir.mkdirs();		                
+      		 
+         // Create the file on server
+         String fileLocation=dir.getAbsolutePath()
+                 + File.separator + id + ".pdf";
+         
+         File serverFile = new File(fileLocation);
+         
+         BufferedOutputStream stream = new BufferedOutputStream(
+                 new FileOutputStream(serverFile));
+         
+         stream.write(bytes);
+         stream.close();	
+		}
+		catch (Exception e)
+		{
+			model.addAttribute("message", "Creation of deferral failed, "+e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+		}	else{
+				 model.addAttribute("message", "You failed to upload " + file.getOriginalFilename() + " because the file was empty.");
+				 return "displayError"; 
+			 }
+			} catch(FormUploadException e){
+				 model.addAttribute("message", "Creation of deferral failed. The system only supports PDFs.");
+				 return "displayError"; 
+			
+			}	
+		
+		Date date = new java.util.Date();
+		List<Deferral> listDefferals = deferralDAO.listDeferralsByStudent(deferral.getStudentId());
+		model.addAttribute("deferrals", listDefferals);
+		model.addAttribute("now", date);
+		// If the deferral is successfully created, display the deferral list.
+		if(id!=0)
+		{
+		return "displayDeferrals";
+		}
+		// If the deferral is not created succesfully, then display an error
+		else{
+			model.addAttribute("message", "Module Name did not match corresponding CRN");
+			return "displayError"; 
+		}
+		
+			 }
+
+		private void validateImage(MultipartFile image){
+			if(!image.getContentType().equals("application/pdf")){
+				throw new FormUploadException("OnlyPDFaccepted");
+			}
+	}
+	
+	/**
+	 * @author Niall McCarthy
+	 * These following 3x methods will create a Deferral for a Student's Programme
+	 *
+	 */
+	
+	/*This method will display a View for the user to enter his/her student Id*/
+	
+	@RequestMapping(value = "/addProgrammeDeferralPage1", method = RequestMethod.GET)
+	public String addProgrammeDeferralPage1(ModelMap model) {
+		List<Programme> listProgrammes = programmeDAO.listProgrammes();
+		model.addAttribute("programmeList",listProgrammes );
+		model.addAttribute("deferral", new Deferral());
+		return "newProgrammeDeferralPage1";
+	}
+	
+	/* Once the user enters their student Id, this method will display 
+	 * the student's details and their corresponding Programme.
+	*/	
+	
+	@RequestMapping(value = "/addProgrammeDeferralPage1", method = RequestMethod.POST)
+	public String displayProgrammeDeferralPage1(
+			@ModelAttribute("deferral") Deferral deferral,BindingResult result, ModelMap model) {
+
+		if (result.hasErrors()) {
+			return "newProgrammeDeferralPage1";
+		}
+		
+		//Get the student's FirstName,LastName and Registered Programme
+		String studentId=deferral.getStudentId();
+		Student student=studentDAO.getStudent(studentId);
+		model.addAttribute("studentFirstName",student.getFirstName());
+		model.addAttribute("studentLastName",student.getLastName());
+		model.addAttribute("studentId",studentId);
+		model.addAttribute("studentProgramme",programmeDAO.getStudentProgrammeId(studentId) );
+		model.addAttribute("deferral", deferral);
+		return "newProgrammeDeferralPage2";
+
+	}
+	
+	/* This method will create the deferral entry for the specfic programme and 
+	 * all the corresponding modules.
+	*/
+	@RequestMapping(value = "/addProgrammeDeferralPage2", method = RequestMethod.POST)
+	public String displayProgrammeDeferralPage2(
+			@ModelAttribute("deferral") Deferral deferral,BindingResult result, ModelMap model) {
+
+		if (result.hasErrors()) {
+			return "newProgrammeDeferralPage2";
+		}
+		
+		try{
+		//Create the programme deferral
+		deferralDAO.createProgrammeDeferral(deferral.getStudentId(), deferral.getProgrammeId());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		Date date = new java.util.Date();
+		List<Deferral> listDefferals = deferralDAO.listDeferralsByStudent(deferral.getStudentId());
+		model.addAttribute("deferrals", listDefferals);
+		model.addAttribute("now", date);
+		return "displayDeferrals";
+
+	}
+	
+	/**
+	 * @author Niall McCarthy
+	 * This method will delete a Deferral entry
+	 *
+	 */
+	@RequestMapping(value= "/delete/id/{id}", method = RequestMethod.GET)
+	public String deleteStudentById(@PathVariable int id, ModelMap model){
+		Deferral deferral = deferralDAO.getDeferral(id);
+		deferralDAO.deleteDeferralById(id);
+		model.addAttribute("message", "Deferral "+ id + " has been deleted");
+		model.addAttribute("id", id);
+		model.addAttribute("studentId", deferral.getStudentId());
+		model.addAttribute("lectId", deferral.getLectId());
+		model.addAttribute("progId", deferral.getProgrammeId());
+		model.addAttribute("moduleId", deferral.getModuleId());
+		model.addAttribute("approval", deferral.getApproval());
+		return "displayDeferral";
+	}
+	
+	/**
+	 * @author Niall McCarthy
+	 * These methods will modify a Deferral entry's Approval
+	 *
+	 */
+	@RequestMapping(value = "/modify/id/{id}", method = RequestMethod.GET) 
+	public String modifyDeferral(@PathVariable int id, ModelMap model) { 
+		Deferral deferralModify=deferralDAO.getDeferral(id);
+		List<Module> listModules = moduleDAO.listModules();
+		model.addAttribute("moduleList",listModules );
+		model.addAttribute("message", "Deferal with id "+ id +" can now be modified");
+		model.addAttribute("deferral", deferralModify);
+		return "modifyForm";	} 
+	
+	@RequestMapping(value="/modify/id/{id}/approval/{approval}", method = RequestMethod.GET) 
+	public String modifyDeferral(@PathVariable int id, @PathVariable String approval,  ModelMap model) {			
+		deferralDAO.updateDeferral(id, approval);
+		Deferral deferralModify=deferralDAO.getDeferral(id);
+		model.addAttribute("message", "Deferral with id "+ id +" has been modified");
+		model.addAttribute("id", id);
+		model.addAttribute("studentId", deferralModify.getStudentId());
+		model.addAttribute("lectId", deferralModify.getLectId());
+		model.addAttribute("progId", deferralModify.getProgrammeId());
+		model.addAttribute("moduleId", deferralModify.getModuleId());
+		model.addAttribute("approval", approval);
+		return "displayDeferral";		
+	}
+	
+	/**
+	 * @author Niall McCarthy
+	 * This method allows a lecturer to download a completed withdrawl form submitted by a student
+	 *
+	 */
+	
+	@RequestMapping(value = "/downloadForm/id/{id}", method = RequestMethod.GET) 
+	public @ResponseBody void downloadWithdrawalForm(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {   
+		try {
+	 
+		// set the path file
+		File fullPath = new File(servletContext.getRealPath("/")+"/resources/form/uploadedForms");
+        File downloadFile = new File(fullPath+"/"+id + ".pdf");
+        FileInputStream inputStream = new FileInputStream(downloadFile);
+       
+        // get MIME type of the file
+        String mimeType = "application/pdf";         
+ 
+        // set content attributes for the response
+        response.setContentType(mimeType);
+        response.setContentLength((int) downloadFile.length());
+ 
+        // set headers for the response
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"", downloadFile.getName());
+        response.setHeader(headerKey, headerValue);
+ 
+        // get output stream of the response
+        OutputStream outStream = response.getOutputStream();
+ 
+        byte[] buffer = new byte[1024];
+        int bytesRead = -1;
+ 
+        // write bytes read from the input stream into the output stream
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, bytesRead);
+        }		   
+ 
+        inputStream.close();
+        outStream.close();
+        
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+	} 
+	
+	
+}

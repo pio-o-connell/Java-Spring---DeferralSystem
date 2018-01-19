@@ -1,0 +1,41 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+$(function() {
+$("#modify").click(function(){	
+	var lastName = $("#lastName").val();
+	var studentId=$("#studentId").val();
+	var url="/student/modify/id/"+studentId+"/lastname/"+lastName;
+	location.href="<%= request.getContextPath() %>"+url;
+});
+});
+</script>
+</head>
+
+<body>
+	<form:form modelAttribute="student">
+
+		<div class="ui-field-contain">
+			<form:label path="studentId">Student Id</form:label>
+			<form:input path="studentId" value="${studentId}" disabled="true" />
+		</div>
+		<div class="ui-field-contain">
+			<form:label path="firstName">First Name</form:label>
+			<form:input path="firstName" value="${firstName}" disabled="true" />
+		</div>
+		<div class="ui-field-contain">
+			<form:label path="lastName">Last Name</form:label>
+			<form:input path="lastName" id="lastName" value="${lastName}"/>
+		</div>
+		<div class="ui-field-contain">
+			<form:label path="email">Email</form:label>
+			<form:input path="email" value="${email}" disabled="true" />
+		</div>
+
+		<input type="button" class="ui-btn" data-theme="b" data-icon="check"
+			value="Modify Student" id="modify" />
+	</form:form>
+</body>
+</html>      

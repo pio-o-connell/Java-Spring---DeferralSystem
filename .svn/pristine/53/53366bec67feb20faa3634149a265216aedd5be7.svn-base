@@ -1,0 +1,48 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+<c:if test="${not empty deferrals}">
+<table data-role="table" class="ui-responsive" data-mode="columntoggle" id="myTable">
+  <thead>
+    <tr>
+    <th data-priority="5">Deferral ID </th>
+    <th data-priority="3">Student ID</th>
+    <th data-priority="4">Lecturer ID</th>
+    <th data-priority="1">Programme ID</th>
+    <th data-priority="2">Module ID</th> 
+    <th data-priority="2">Approval</th>    
+    </tr>
+  </thead>
+
+  <tbody>
+      <c:forEach var="deferral" items="${deferrals}">
+    <tr>
+    <%--
+   	  <td><img alt="deferral" width="24" border="0" align="middle" src="<c:url value="/resources/images/songwriter1.jpg"/>"></td>
+   	  --%>
+      <td>${deferral.defId}</td>
+      <td>${deferral.studentId}</td>
+      <td>${deferral.lectId}</td>
+      <td>${deferral.programmeId}</td>  
+      <td>${deferral.moduleId}</td> 
+      <td>${deferral.approval}</td>  
+     
+     <%--  <td><a href="<%= request.getContextPath() %>/songwriter/downloadImage/${songwriter.id}"
+						class="ui-btn">Download Image</a></td> 
+               --%>
+               
+    </tr>
+     </c:forEach>
+  </tbody>
+ 
+</table>
+<br>
+<br>
+<small><fmt:formatDate value="${now}" pattern="hh:mma MMM d, yyyy" /></small>		
+		
+	</c:if>
+	
+	<c:if test="${empty deferrals}">
+	<div class="notification warning">
+		No deferals.
+	</div>
+	</c:if> 

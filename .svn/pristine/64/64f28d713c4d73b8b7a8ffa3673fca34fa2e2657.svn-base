@@ -1,0 +1,40 @@
+<%@ include file= "/WEB-INF/jsp/include.jsp" %>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Welcome page</title>
+<%-- <link href="<c:url value="/resources/css/Group2.css" />" rel="stylesheet"> --%> 
+</head>
+<body>
+
+<div id="messageTest">
+<div class="ui-field-contain">A completed withdrawal form is required to apply for a deferral. Please use the link below</div>
+<a href="<%= request.getContextPath() %>/home/downloadForm" download target="_blank" class="ui-field-contain">Download Deferral Form</a>
+</div>
+
+
+
+
+<hr></hr>
+<p>Formatted Date (1): <fmt:formatDate type="time" 
+            value="${now}" /></p>
+<p>Formatted Date (2): <fmt:formatDate type="date" 
+            value="${now}" /></p>
+<p>Formatted Date (3): <fmt:formatDate type="both" 
+            value="${now}" /></p>
+<p>Formatted Date (4): <fmt:formatDate type="both" 
+            dateStyle="short" timeStyle="short" 
+            value="${now}" /></p>
+<p>Formatted Date (5): <fmt:formatDate type="both" 
+            dateStyle="medium" timeStyle="medium" 
+            value="${now}" /></p>
+<p>Formatted Date (6): <fmt:formatDate type="both" 
+            dateStyle="long" timeStyle="long" 
+            value="${now}" /></p>
+<p>Formatted Date (7): <fmt:formatDate pattern="yyyy-MM-dd" 
+            value="${now}" /></p>
+
+<hr></hr>
+</body>
+</html>

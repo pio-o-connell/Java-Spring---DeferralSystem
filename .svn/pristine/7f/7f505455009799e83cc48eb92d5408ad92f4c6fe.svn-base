@@ -1,0 +1,40 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+
+<form:form method="POST" action="addNew" modelAttribute="student">
+
+	<form:errors path="*" cssClass="errorblock" element="div" />
+	
+	<div class="ui-field-contain">
+		<form:label path="studentId">Student ID</form:label>
+		<form:input path="studentId" placeholder="Enter Student ID .." value=""/>
+		<form:errors path="studentId" cssClass="error" class="notification error" 
+			style="display:block"></form:errors>
+	</div>
+	
+	<div class="ui-field-contain">
+		<form:label path="firstName">First Name</form:label>
+		<form:input path="firstName" placeholder="Enter Student first name .." value=""/>
+		<form:errors path="firstName" cssClass="error" class="notification error" 
+			style="display:block"></form:errors>
+	</div>
+	
+	<div class="ui-field-contain">
+		<form:label path="lastName">Last Name</form:label>
+		<form:input path="lastName" placeholder="Enter Student last name .." value=""/>
+		<form:errors path="lastName" cssClass="error" class="notification error" 
+			style="display:block"></form:errors>
+	</div>
+	
+	<div class="ui-field-contain">
+		<form:label path="email">Student Email</form:label>
+		<form:input path="email" placeholder="Enter Student Email .." value=""/>
+		<form:errors path="email" cssClass="error" class="notification error" 
+			style="display:block"></form:errors>
+	</div>
+	
+	
+	
+	
+	<input data-theme="b" type="submit" data-icon="check" value="Save" />
+</form:form>

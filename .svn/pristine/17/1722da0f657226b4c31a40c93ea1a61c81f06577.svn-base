@@ -1,0 +1,342 @@
+package com.grouptwo.controllers;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.grouptwo.domain.Lecturer;
+import com.grouptwo.domain.Programme;
+import com.grouptwo.domain.Student;
+import com.grouptwo.service.LecturerDAO;
+import com.grouptwo.service.ProgrammeService;
+
+/**@author Dale Cusack
+ * 
+ * The Class ProgrammeController.
+ */
+@Controller
+@RequestMapping("/programme")
+public class ProgrammeController {
+	
+	/** The programmeDAO autowired by type. */
+	@Autowired
+	ProgrammeService programmeService;
+	@Autowired
+	LecturerDAO lecturerDAO;
+	
+	/**
+	 * List all.
+	 *
+	 * @param model the model
+	 * @return the string
+	 */
+	@RequestMapping(value="/listall",method=RequestMethod.GET)
+	public String listAll(ModelMap model){
+		List<Programme> progList = programmeService.listProgrammes();//implementing class queries database
+		model.addAttribute("programmes", progList);//add this info to model to display in jsp with attribute programmes
+		model.addAttribute("message", "List of all programmes");
+		return "displayProgrammes";//return a view name displayProgrammes
+	}
+	
+	
+	
+	/**
+	 * Delete.
+	 *
+	 * @param programmeId the programme id
+	 * @param model the model
+	 * @return the string
+	 */
+	@RequestMapping(value="/delete/{programmeId}",method=RequestMethod.GET)
+	public String delete(@PathVariable String programmeId,ModelMap model){
+		List<Programme> progList =programmeService.deleteProgramme(programmeId);
+		model.addAttribute("programmes", progList);
+		model.addAttribute("message", "Programme list after deleting programme Id "+programmeId);
+		return "displayProgrammes";
+	}
+	
+	/**
+	 * When programme/addNew entered into url new programme passed to newProgramme
+	 * logical view name with blank instance of Programme
+	 * @param model the model
+	 * @return the string
+	 */
+	@RequestMapping(value="/addNew",method=RequestMethod.GET)
+	public String addNewProgramme(ModelMap model){
+		model.addAttribute("newProgramme", new Programme());//add this new blank Programme instance to model
+		return "newProgramme";//passing logical view name and model
+	}
+	
+	/**
+	 * Retreived info from new programme form.
+	 *
+	 * @param newProgramme the new programme
+	 * @param model the model
+	 * @return the string
+	 */
+	@RequestMapping(value="/addProg",method=RequestMethod.POST)
+	public String displayNewProgramme(@ModelAttribute("newProgramme")  @Valid  Programme newProgramme,BindingResult result, ModelMap model){//a new Programme with key newProgramme passed back
+		
+		if(result.hasErrors())
+			return "newProgramme";
+		
+		model.addAttribute("programmeId",newProgramme.getProgrammeId());//add attribute from getProgrammeId() of newProgramme passed back to key programmeId
+		model.addAttribute("numYears",newProgramme.getNumYears());//add attribute from getNumYears() of newProgramme passed back to key numYears
+		model.addAttribute("coordinatorId",newProgramme.getCoordinatorId());//add attribute from getCoordinatorId() of newProgramme passed back to key coordinatorId
+		model.addAttribute("progYear",newProgramme.getProgYear());//add attribute fromgetProgYear() of newProgramme passed back to key progYear
+		model.addAttribute("message", "A new programme has been created shown below");
+		String jan="Jan";//since new Programmme will begin in Jan 
+		try{
+			programmeService.createProgramme(newProgramme.getProgrammeId(), newProgramme.getNumYears(),
+					newProgramme.getCoordinatorId(), jan);//all attributes passed back added to overloaded constructor to create a new instance of programme
+		}catch(Exception e ){
+			e.printStackTrace();
+
+		}
+	
+		return "displayProgramme";//passing logical view name and model
+	}
+	
+	/**
+	 * Removes the programme.
+	 *
+	 * @param model the model
+	 * @return the string
+	 */
+	@RequestMapping(value="/remove",method=RequestMethod.GET)
+	public String removeProgramme(ModelMap model){
+		model.addAttribute("removeProgramme", new Programme());//add this new blank Programme instance to model
+		return "removeProgramme";//passing logical view name and model
+	}
+	
+	/**
+	 * Delete programme.
+	 *
+	 * @param removeProgramme the remove programme
+	 * @param model the model
+	 * @return the string
+	 */
+	@RequestMapping(value="/deleteProg",method=RequestMethod.POST)
+	public String deleteProgramme(@ModelAttribute("removeProgramme")   Programme removeProgramme, ModelMap model){//the  Programme with key removeProgramme passed back 
+		model.addAttribute("deletedProg", removeProgramme.getProgrammeId());//add attribute from getProgrammeId() of removeProgramme passed back to key deletedProg
+		
+		try{
+			//programmeDAO.deleteProgramme(removeProgramme.getProgrammeId());//passing value retreived back to be deleted
+			List<Programme> progList =programmeService.deleteProgramme(removeProgramme.getProgrammeId());//get list of programmes after the delete action
+			model.addAttribute("programmes", progList);//adding list of programmes to model
+			model.addAttribute("message", "Programme list after deleting "+removeProgramme.getProgrammeId());
+			if(!(removeProgramme.getProgrammeId().length()==11))
+				model.addAttribute("message", "No programme deleted as none selected");
+			//return "displayProgAfterDelete";//passing logical view name and model
+			return "displayProgrammes";//passing logical view name and model
+		
+		}catch(Exception e ){
+			e.printStackTrace();
+
+		}
+		return null;
+	}
+	
+	/**
+	 * Gets students id by means of a form
+	 * @param model the model
+	 * @return the students Id
+	 */
+	@RequestMapping(value="/ofStudent",method=RequestMethod.GET)
+	public String getStudentsProgrammeForm(ModelMap model){
+		model.addAttribute("progOfStudent", new Student());
+		return "studentsProgForm";
+		
+	}
+	
+	/**
+	 * Gets the students programme.
+	 * @param student
+	 * @param model
+	 * @return the Students programme
+	 */
+	@RequestMapping(value="/studentsProg",method=RequestMethod.POST)
+	public String getStudentsProgramme(@ModelAttribute("progOfStudent")Student student, ModelMap model){//the  Programme with key removeProgramme passed back 
+		model.addAttribute("studentId", student.getStudentId());//add attribute from getProgrammeId() of removeProgramme passed back to key deletedProg
+		
+		try{
+			String studentsProgId = programmeService.getStudentProgrammeId( student.getStudentId());
+			Programme studentsProg = programmeService.getProgramme(studentsProgId);
+			model.addAttribute("programmeId",studentsProg.getProgrammeId());//add attribute from getProgrammeId() of newProgramme passed back to key programmeId
+			model.addAttribute("numYears",studentsProg.getNumYears());//add attribute from getNumYears() of newProgramme passed back to key numYears
+			model.addAttribute("coordinatorId",studentsProg.getCoordinatorId());//add attribute from getCoordinatorId() of newProgramme passed back to key coordinatorId
+			model.addAttribute("progYear",studentsProg.getProgYear());//add attribute fromgetProgYear() of newProgramme passed back to key progYear
+			model.addAttribute("message","Programme of student with Id "+student.getStudentId());
+			//model.addAttribute("studentsProg", studentsProg);
+			//return "displayStudentsProgramme";
+			return "displayProgramme";
+			
+		}catch(Exception e ){
+			e.printStackTrace();
+
+		}
+		return null;
+	}
+	
+	/**
+	 * Displays a form to enter programme id to search for
+	 * 
+	 * @param model
+	 * @return 
+	 */
+	@RequestMapping(value="/details",method=RequestMethod.GET)
+	public String progDetailsForm(ModelMap model){
+		model.addAttribute("aProgramme", new Programme());
+		return "aProgForm";
+	}
+	
+	/**
+	 * Displays the programmes details
+	 * @param aProgramme
+	 * @param model
+	 * @return programmes details searched for
+	 */
+	@RequestMapping(value="/displayAProg",method=RequestMethod.POST)
+	public String getAProgramme(@ModelAttribute("aProgramme")Programme aProgramme, ModelMap model){//the  Programme with key removeProgramme passed back 
+		
+		try{
+			
+			Programme theProgramme = programmeService.getProgramme(aProgramme.getProgrammeId());
+			model.addAttribute("programmeId",theProgramme.getProgrammeId());//add attribute from getProgrammeId() of newProgramme passed back to key programmeId
+			model.addAttribute("numYears",theProgramme.getNumYears());//add attribute from getNumYears() of newProgramme passed back to key numYears
+			model.addAttribute("coordinatorId",theProgramme.getCoordinatorId());//add attribute from getCoordinatorId() of newProgramme passed back to key coordinatorId
+			model.addAttribute("progYear",theProgramme.getProgYear());//add attribute fromgetProgYear() of newProgramme passed back to key progYear
+			model.addAttribute("message", "Details of Programme "+theProgramme.getProgrammeId()+" shown below");
+			
+			return "displayProgramme";
+			
+		}catch(Exception e ){
+			e.printStackTrace();
+
+		}
+		return null;
+	}
+	/**
+	 * Using menu modify function displays a form to enter programme id
+	 * @param model
+	 * @return a form
+	 */
+	@RequestMapping(value="/modifyProg",method=RequestMethod.GET)
+	public String modifyProgDetailsForm(ModelMap model){
+		model.addAttribute("aProgToModify", new Programme());
+		return "aModifyProgForm";
+	}
+	/**
+	 * After entering programme id in form displayed from menu
+	 * @param aProgramme
+	 * @param model
+	 * @return searched for programmes details
+	 */
+	@RequestMapping(value="/displayAProgToModify",method=RequestMethod.POST)
+	public String getAProgrammeToModify(@ModelAttribute("aProgToModify")Programme aProgramme, ModelMap model){//the  Programme with key removeProgramme passed back 
+		
+		try{
+			
+			Programme theProgramme = programmeService.getProgramme(aProgramme.getProgrammeId());
+			model.addAttribute("programmeId",theProgramme.getProgrammeId());//add attribute from getProgrammeId() of newProgramme passed back to key programmeId
+			model.addAttribute("numYears",theProgramme.getNumYears());//add attribute from getNumYears() of newProgramme passed back to key numYears
+			model.addAttribute("coordinatorId",theProgramme.getCoordinatorId());//add attribute from getCoordinatorId() of newProgramme passed back to key coordinatorId
+			model.addAttribute("progYear",theProgramme.getProgYear());//add attribute fromgetProgYear() of newProgramme passed back to key progYear
+			model.addAttribute("modifiedProg",new Programme());
+
+			return "displayTheProgrammeToModify";
+			
+		}catch(Exception e ){
+			e.printStackTrace();
+
+		}
+		return null;
+	}
+	
+	/**
+	 * Displays the programme after modification
+	 * @param modifiedProgramme
+	 * @param model
+	 * @return modified programme
+	 */
+	@RequestMapping(value="/modifiedProg",method=RequestMethod.POST)
+	public String displayModifiedProgramme(@ModelAttribute("modifiedProg")Programme modifiedProgramme, ModelMap model){//a new Programme with key newProgramme passed back 
+		model.addAttribute("programmeId",modifiedProgramme.getProgrammeId());//add attribute from getProgrammeId() of newProgramme passed back to key programmeId
+		model.addAttribute("numYears",modifiedProgramme.getNumYears());//add attribute from getNumYears() of newProgramme passed back to key numYears
+		model.addAttribute("coordinatorId",modifiedProgramme.getCoordinatorId());//add attribute from getCoordinatorId() of newProgramme passed back to key coordinatorId
+		model.addAttribute("progYear",modifiedProgramme.getProgYear());//add attribute fromgetProgYear() of newProgramme passed back to key progYear
+		model.addAttribute("message", "Programme you Modified with Id "+modifiedProgramme.getProgrammeId());
+		String jan="Jan";//since new Programmme will begin in Jan 
+		try{
+			programmeService.updateProgrammeCoordinator( modifiedProgramme.getCoordinatorId(),modifiedProgramme.getProgrammeId());
+		}catch(Exception e ){
+			e.printStackTrace();
+
+		}
+		
+		return "displayProgramme";//passing logical view name and model
+	}
+	
+	/**
+	 * Displays the programme details corresponding to the button
+	 * @param programmeId
+	 * @param model
+	 * @return programme details
+	 */
+	@RequestMapping(value="/modifyProgBtn/{programmeId}",method=RequestMethod.GET)
+	public String modifyButton(@PathVariable String programmeId,ModelMap model){
+			try{
+			
+			Programme theProgramme = programmeService.getProgramme(programmeId);
+			List<Lecturer> listLecturers = lecturerDAO.listLecturers();
+			model.addAttribute("coordinatorList",listLecturers );
+			model.addAttribute("programmeId",theProgramme.getProgrammeId());//add attribute from getProgrammeId() of newProgramme passed back to key programmeId
+			model.addAttribute("numYears",theProgramme.getNumYears());//add attribute from getNumYears() of newProgramme passed back to key numYears
+			model.addAttribute("coordinatorId",theProgramme.getCoordinatorId());//add attribute from getCoordinatorId() of newProgramme passed back to key coordinatorId
+			model.addAttribute("progYear",theProgramme.getProgYear());//add attribute fromgetProgYear() of newProgramme passed back to key progYear
+			model.addAttribute("programme", new Programme());
+			
+			
+		}catch(Exception e ){
+			e.printStackTrace();
+
+		}
+			/*return "displayTheProgrammeToModify";*/
+			return "displayTheProgrammeToModifyWithButton";
+	}
+	
+	@RequestMapping(value="/modify/programmeId/{programmeId}/coordinatorId/{coordinatorId}",method=RequestMethod.GET)
+	public String displayModifiedProgrammeByButton(@PathVariable String programmeId,@PathVariable String coordinatorId, ModelMap model){
+		try{
+		programmeService.updateProgrammeCoordinator( coordinatorId,programmeId);
+		}catch(Exception e ){
+			e.printStackTrace();
+		}
+		Programme theProgramme = programmeService.getProgramme(programmeId);
+		model.addAttribute("programmeId",programmeId);
+		model.addAttribute("numYears",theProgramme.getNumYears());
+		model.addAttribute("coordinatorId",coordinatorId);
+		model.addAttribute("progYear",theProgramme.getProgYear());
+		model.addAttribute("message", "Programme you Modified with Id "+theProgramme.getProgrammeId()); 
+		
+		return "displayProgramme";//passing logical view name and model
+		
+		
+	}
+	
+	
+	
+	
+	
+
+}
+

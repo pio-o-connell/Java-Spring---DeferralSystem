@@ -1,0 +1,215 @@
+package com.grouptwo.controllers;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.grouptwo.domain.Deferral;
+import com.grouptwo.domain.Module;
+import com.grouptwo.domain.Programme;
+import com.grouptwo.domain.Student;
+import com.grouptwo.service.DeferralService;
+import com.grouptwo.service.ModuleService;
+import com.grouptwo.service.ProgrammeService;
+import com.grouptwo.service.StudentService;
+
+
+/**
+ * @author Julia Foden
+ *
+ */
+
+@Controller
+@RequestMapping("/student")
+public class StudentController {
+
+		
+		@Autowired
+		StudentService studentService;
+		
+		@Autowired
+		ProgrammeService programmeService;
+		
+		@Autowired
+		ModuleService moduleService;
+		
+		@Autowired
+		DeferralService deferralService;
+		
+		/**
+		 * 
+		 * This method will list all students
+		 * @author Julia Foden
+		 */
+		@RequestMapping(value="/listall", method = RequestMethod.GET) 
+		public String listAll(ModelMap model) {			
+				
+				List<Student> listStudents=studentService.listStudents();
+				model.addAttribute("students", listStudents);
+			    return "displayStudents";			
+			} 
+		
+		/**
+		 * 
+		 * This method will display the details of one student
+		 * @author Julia Foden
+		 */
+		@RequestMapping(value= "/display/id/{id}", method = RequestMethod.GET)
+		public String displayStudentById(@PathVariable String id, ModelMap model){
+			//get student by id and get their details
+			Student student = studentService.getStudent(id);
+			model.addAttribute("message", "Student "+ id + ".");
+			model.addAttribute("firstname", student.getFirstName());
+			model.addAttribute("lastname", student.getLastName());
+			model.addAttribute("email", student.getEmail());
+			
+			//get the programme the student is registered on
+			String programmeID ="No programme";
+			try {
+				programmeID = programmeService.getStudentProgrammeId(id);
+				} catch (Exception e) {
+				System.out.println("no programme");
+				e.printStackTrace();
+			}
+			
+			model.addAttribute("programme", programmeID);	
+			
+			//get the student's registered modules
+			ArrayList<String> moduleIDList = new ArrayList<String>();
+			try {
+				List<Module> moduleList = moduleService.listStudentModules(id);
+				for(Module module: moduleList){
+					String moduleId = module.getModuleId();
+					moduleIDList.add(moduleId);
+				}
+			} catch (Exception e) {
+				System.out.println("No modules");
+				e.printStackTrace();
+			}
+			model.addAttribute("modules", moduleIDList);
+			
+			//get the student's deferrals
+			ArrayList<Deferral> deferralList = new ArrayList<Deferral>();
+			try {
+				List<Deferral> deferralDBList = deferralService.listDeferralsByStudent(id);
+				for(Deferral deferral: deferralDBList){
+					deferralList.add(deferral);
+				}
+			} catch (Exception e) {
+				System.out.println("No deferrals");
+				e.printStackTrace();
+			} 
+			model.addAttribute("deferrals",deferralList);
+			
+			return "displayStudent";
+		}
+		
+		/**
+		 *
+		 * This method will delete one student
+		 *  @author Julia Foden
+		 */
+		@RequestMapping(value= "/delete/id/{id}", method = RequestMethod.GET)
+		public String deleteStudentById(@PathVariable String id, ModelMap model){
+			Student student = studentService.getStudent(id);
+			studentService.deleteStudent(id);
+			model.addAttribute("message", "Student "+ id + " has been deleted");
+			model.addAttribute("firstname", student.getFirstName());
+			model.addAttribute("lastname", student.getLastName());
+			model.addAttribute("email", student.getEmail());
+			return "displayStudent";
+		}
+		
+		/**
+		 * This method will produce a form to modify a student's details 
+		 * 
+		 */
+		@RequestMapping(value= "/modify/id/{id}", method = RequestMethod.GET)
+		public String modifyStudent(@PathVariable String id, ModelMap model){
+			Student studentModify = studentService.getStudent(id);
+			model.addAttribute("message", "The student's details can now be modified");
+			model.addAttribute("student", studentModify);
+			return "modifyStudentForm";
+		}
+		
+		/**
+		 * This method will modify the student's last name and then display the student's details  
+		 * 
+		 */
+		
+		// THIS NOT WORKING YET SO COMMENTED OUT **************
+		
+		/*@RequestMapping(value="/modify/id/{studentId}/lastname/{lastName}", method = RequestMethod.GET)
+		public String modifyStudent(@PathVariable String studentId, @PathVariable String lastName, ModelMap model){
+			System.out.println("here");
+			studentDAO.updateStudent(studentId, lastName);
+			Student studentModify = studentDAO.getStudent(studentId);
+			model.addAttribute("message", "The student with details below has been modified");
+			model.addAttribute("id", studentId);
+			model.addAttribute("firstname", studentModify.getFirstName());
+			model.addAttribute("lastname", studentModify.getLastName());
+			model.addAttribute("email", studentModify.getEmail());
+			return "displayStudent";
+		}*/
+		
+		/**
+		 * 
+		 * This method will produce the form to add a student
+		 * @author Julia Foden
+		 */
+		@RequestMapping(value= "/addNew", method = RequestMethod.GET)
+		public String addNewStudent(ModelMap model){
+			model.addAttribute("student", new Student());
+			return "newStudent";
+		}
+		
+		/**
+		 * This method will add a new student to the database
+		 * @author Julia Foden
+		 *
+		 */
+		@RequestMapping(value= "/addNew", method = RequestMethod.POST)
+		public String displayNewStudent(@ModelAttribute ("student") @Valid Student student, BindingResult result, 
+				ModelMap model){
+			
+			if(result.hasErrors()){
+				return "newStudent";
+			}	
+			
+			try {
+				model.addAttribute("id", student.getStudentId());
+				model.addAttribute("firstname", student.getFirstName());
+				model.addAttribute("lastname", student.getLastName());
+				model.addAttribute("email", student.getEmail());
+				
+				studentService.createStudent(student.getStudentId(), student.getFirstName(),student.getLastName(),
+						student.getEmail());
+				model.addAttribute("message", "The following student has been created:");
+			} catch (Exception e) {
+				model.addAttribute("message", "Creation of new student failed. "+e.getLocalizedMessage());
+				e.printStackTrace();
+			}
+			
+			
+			return "displayStudent";
+		}
+		
+	}   
+	
+
+
+
+
+
+
+

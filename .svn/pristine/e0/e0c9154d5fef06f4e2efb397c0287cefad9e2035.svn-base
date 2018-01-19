@@ -1,0 +1,44 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+<form:form method="POST" action="addModule" modelAttribute="modules">
+
+<form:errors path="*" class="errorblock" element="div"></form:errors>
+
+  
+  
+  
+  
+ <div class="ui-field-contain">
+ <form:label path="moduleId">moduleId</form:label>
+ <form:input path="moduleId" placeholder="Module ID.." value=""/>
+ <form:errors path="moduleId" cssClass="error" class="notification error" style="display:block"></form:errors>
+ </div>
+
+ 
+ <div class="ui-field-contain">
+ <form:label path="crnNumber">crnNumber</form:label>
+ <form:input path="crnNumber" placeholder="CRN.."  value=""/>
+ <form:errors path="crnNumber" cssClass="error" class="notification error" style="display:block"></form:errors>
+ </div>
+ 
+ <div class="ui-field-contain">
+ <form:label path="name">moduleName</form:label>
+ <form:input path="name" placeholder="Module Name.."   value=""/>
+ <form:errors path="name" cssClass="error" class="notification error" style="display:block"></form:errors>
+ </div>
+ 
+ <div class="ui-field-contain">
+ <form:label path="lectId">Lecturer ID</form:label>
+ <form:input path="lectId" placeholder="Module Lecturer ID.."   value=""/>
+ <form:errors path="lectId" cssClass="error" class="notification error" style="display:block"></form:errors>
+ </div>
+ 
+ <div class="ui-field-contain">
+ <form:label path="semesterId">Semester Id:</form:label>
+ <form:input path="semesterId" placeholder="Module Semester ID.."   value=""/>
+ <form:errors path="semesterId" cssClass="error" class="notification error" style="display:block"></form:errors>
+ </div>
+ 
+ 
+ <input data-theme="b" type="submit" data-icon="check" value="Save" />
+  </form:form>  

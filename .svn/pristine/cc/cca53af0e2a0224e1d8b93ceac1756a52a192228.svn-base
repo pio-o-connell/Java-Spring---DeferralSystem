@@ -1,0 +1,48 @@
+@CHARSET "ISO-8859-1";
+
+body {
+	/* background: #FFFFFF url(../images/thehitpic1.jpg) no-repeat
+		fixed left top; */
+	color: #000000;
+	font-family: 'Lucida Grande',sans-serif;
+	font-size: 3em;
+	font-size-adjust: none;
+	font-stretch: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 1.5;
+	text-align: center;
+} 
+
+#messageTest{
+    height: 400px; 
+    width: 800px; 
+    padding: 5px;      
+    }
+    
+.studentText {
+  display:block;
+  width:500px;
+  margin-left:56px;
+  min-height:50px;
+}
+
+ol.students-list {
+	font-size: 1.0em;
+	list-style-image: none;
+	list-style-position: outside;
+	list-style-type: none;
+}
+
+ol.students-list li:first-child {
+  border-top: 1px solid #EEEEEE;
+}
+
+ol.students-list li {
+	font-size: 1.2em;
+	border-bottom: 1px solid #EEEEEE;
+	line-height: 1.1em;
+	padding: 0.7em 0 0.6em;
+	position: relative;
+}      

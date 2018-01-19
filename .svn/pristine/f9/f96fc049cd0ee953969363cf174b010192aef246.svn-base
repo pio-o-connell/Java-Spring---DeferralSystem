@@ -1,0 +1,148 @@
+package com.grouptwo.repository;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.grouptwo.domain.Student;
+import com.grouptwo.domain.mappers.StudentMapper;
+import com.grouptwo.repository.StudentDAO;
+@Repository
+public class StudentJdbcDaoSupport extends JdbcDaoSupport implements StudentDAO {
+
+	@Autowired
+	StudentJdbcDaoSupport(DataSource dataSource) {
+		   setDataSource(dataSource);
+	} 
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void createStudent(String studId, String firstName,String lastName, String email) {
+		String SQL = "insert into student (Student_ID, Firstname, Surname, Student_Email) values (?, ?, ?,?)";
+		getJdbcTemplate().update(SQL,new Object[] { studId, firstName, lastName, email });
+		return;
+		}
+	
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void deleteStudent(String studId) {
+		String SQL = "delete from student where Student_ID = ?";
+		getJdbcTemplate().update(SQL, new Object[] { studId });
+		return;
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void createMultipleStudents(final List<Student> students) {
+		String SQL = "insert into student (Student_ID, Firstname, Surname, Student_Email) values (?, ?, ?, ?)";
+		getJdbcTemplate().batchUpdate(SQL, new BatchPreparedStatementSetter() {
+
+			public int getBatchSize() {
+				return students.size();
+			}
+
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				Student student = students.get(i);
+				ps.setString(1, student.getStudentId());
+				ps.setString(2, student.getFirstName());
+				ps.setString(3, student.getLastName() );
+				ps.setString(4, student.getEmail() );
+			}
+
+						
+		});
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public Student getStudent(String id) {
+		String SQL = "select * from student where Student_ID = ?";
+		Student student= (Student) getJdbcTemplate().queryForObject(SQL, 
+						new Object[]{id}, new StudentMapper());
+		return student;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public List<Student> listStudents() {
+		String SQL = "select * from student";
+		List<Student> studentList = getJdbcTemplate().query(SQL, 
+						new StudentMapper());
+		return studentList;
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public int countRows() {
+		String SQL = "select count(*) from student";
+		int rows=getJdbcTemplate().queryForObject(SQL, Integer.class);
+		return rows;
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void updateStudent(String id, String firstname, String lastname,
+			String email) {
+		String SQL = "update Student set Firstname =?, Surname = ?, Student_Email=? where Student_ID = ?";
+		getJdbcTemplate().update(SQL, new Object[] {firstname, lastname, email, id});
+		System.out.println("Updated record with id: "+ id);
+		return;		
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void updateStudent(String id, String lastname){
+		String SQL = "update Student set Surname = ? where Student_ID = ?";
+		getJdbcTemplate().update(SQL, new Object [] {lastname, id});
+		System.out.println("Updated record with id: "+ id);
+		return;
+	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void updateStudentEmail(String id, String email) {
+		String SQL = "update Student set Student_Email=? where Student_ID = ?";
+		getJdbcTemplate().update(SQL, new Object [] {email, id});
+		System.out.println("Updated record with id: "+ id);
+		return;
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void deleteMultipleStudents(final List<Student> students) {
+		String SQL = "delete from student where Student_ID = ?";
+		getJdbcTemplate().batchUpdate(SQL, new BatchPreparedStatementSetter() {
+			
+			@Override
+			public int getBatchSize(){
+				return students.size();
+			}
+			
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				Student student = students.get(i);
+				ps.setString(1, student.getStudentId());
+				
+			}
+		
+		});
+	}
+
+	
+
+	
+}

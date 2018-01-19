@@ -1,0 +1,28 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+<html>
+<c:url var="url" value="/j_spring_security_logout"></c:url>  
+<a href="<%= request.getContextPath() %>/home" class="ui-btn ui-icon-home ui-btn-icon-left">Home</a>
+<a href="${url}" class="ui-btn ui-icon-search ui-btn-icon-left">Log out</a> 
+<head>
+<title>Header</title>
+<link href="<c:url value="/resources/css/Group2.css" />" rel="stylesheet"></link>
+</head>
+<body>
+
+ <div>
+<ul class="tabs">
+<a href="/SpringWebProject/home" >Home</a>
+<!-- <li><a href="#">Student</a></li>
+<li><a href="#">Lecturer</a></li>
+<li><a href="#">Module</a></li>       
+<li><a href="#">Programme</a></li>  
+<li><a href="/SpringWebProject/deferral/listall">Deferral</a></li>  -->     
+</ul> 
+</div> 
+
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,70 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+				<!--  @author Dale Cusack, modified by Julia Foden -->
+
+	<h4>${message} </h4>
+	
+
+	<c:if test="${not empty programmes}">
+	<table data-role="table" class="ui-responsive" data-mode="columntoggle" id="myTable">
+  		<thead>
+    		<tr>
+    			<th data-priority="3">Programme ID</th>
+    			<th data-priority="4">Number Years</th>
+    			<th data-priority="1">Coordinator</th>
+    			<th data-priority="2">Programme year</th>
+    			<th data-priority="5">Delete</th>
+    			<th data-priority="6">Modify</th>    
+    </tr>
+  </thead>
+  
+  <tbody>
+	<c:forEach var="programme" items="${programmes}" varStatus="status">
+		<tr>
+			<%-- <td>${programme.programmeId}</td> --%>
+			<td><a href="<%= request.getContextPath() %>/programme/display/id/${programme.programmeId}"
+						class="ui-btn ui-corner-all">${programme.programmeId}</a></td>
+			<td>${programme.numYears}</td>
+			<td><a href="<%= request.getContextPath() %>/lecturer/display/id/${programme.coordinatorId}"
+						class="ui-btn ui-corner-all">${programme.coordinatorId}</a></td>
+			<td>${programme.progYear}</td>
+			<td><a href="<%= request.getContextPath() %>/programme/delete/${status.current.programmeId}"
+						class="ui-btn ui-corner-all">Delete</a></td>
+			<td><a href="<%= request.getContextPath() %>/programme/modifyProgBtn/${status.current.programmeId}"
+						class="ui-btn ui-corner-all">Modify</a></td>
+			
+			
+		</tr>
+<%-- 		<c:out value="${programme.programmeId}"></c:out> --%>
+     </c:forEach>
+  </tbody>
+ 
+</table>			
+		
+	</c:if>
+	
+	<c:if test="${empty programmes}">
+	<div class="notification warning">
+		No Programmes.
+	</div>
+	</c:if> 
+	
+	
+	<%-- <c:if test="${not empty programmes}">
+		<ol class="students-list">
+			<c:forEach var="programme" items="${programmes}">
+				<li>
+					<span class="programmeImage"> 
+						<img alt="programme" width="60" border="0" align="middle" src="<c:url value="/resources/images/prog.jpg"/>">	
+					</span>
+					<span class="programmeText"> 
+						<c:out	value="${programme.programmeId}" />
+						<c:out value="${programme.numYears}" />
+						<c:out value="${programme.coordinatorId}" />
+						<c:out value="${programme.progYear}" /><br />
+					</span>
+				</li>
+
+			</c:forEach>
+		</ol>
+	</c:if> --%>

@@ -1,0 +1,31 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+				<!--  @author Dale Cusack -->
+
+	<h2>${message}</h2>
+	
+	<table data-role="table" class="ui-responsive" data-mode="columntoggle" id="myTable">
+  		<thead>
+    		<tr>
+    			<th data-priority="5">Image </th>
+    			<th data-priority="3">Programme ID</th>
+    			<th data-priority="4">Number Years</th>
+    			<th data-priority="1">Coordinator</th>
+    			<th data-priority="2">Programme year</th>     
+    </tr>
+  </thead>
+  
+  <tbody>
+	
+		<tr>
+			<td><img alt="programme" width="60" border="0" align="middle" src="<c:url value="/resources/images/prog.jpg"/>"></td>
+			<td>${programmeId}</td>
+			<td>${numYears}</td>
+			<td>${coordinatorId}</td>
+			<td>${progYear}</td>
+		</tr>
+		<c:out value="${programme.programmeId}"></c:out>
+
+  </tbody>
+ 
+</table>	

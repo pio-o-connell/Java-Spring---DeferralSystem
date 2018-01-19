@@ -1,0 +1,50 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+				<!--  @author Dale Cusack -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+$(function() {
+$("#modify").click(function(){		
+	var coordinatorId = $("#coordinator").val(); 
+	var programmeId=${programmeId};	
+	var url="/programme/modify/programmeId/"+programmeId+"/coordinatorId/"+coordinatorId;
+	location.href="<%= request.getContextPath() %>"+url;
+});
+});
+</script>
+</head>
+
+<body>
+	<!-- Form for user to add in attributes to create a new Programme
+	When Save button pressed data stored in model attribute newProgramme
+	/programme/addProg url generated -->
+	<form:form method="POST" action="modifiedProg" modelAttribute="modifiedProg">
+	
+		<div class="ui-field-contain">
+ 			<form:label path="programmeId">ProgrammeId</form:label>
+ 			<form:input path="programmeId" placeholder="${programmeId} }" value="${programmeId}"
+ 			disabled="true"/>
+ 		</div>
+ 		<div class="ui-field-contain">
+ 			<form:label path="numYears">Number Of Years</form:label>
+ 			<form:input path="numYears" placeholder="${numYears}" value="${numYears}"
+ 			disabled="true"/>
+ 		</div>
+ 		<div class="ui-field-contain">
+ 			<form:label path="coordinatorId">Coordinator</form:label>
+ 			<form:input path="coordinatorId" id="coordinator" placeholder="${coordinatorId}" value=""/>
+ 		</div>
+ 		<div class="ui-field-contain">
+ 			<form:label path="progYear">Programme Year</form:label>
+ 			<form:input path="progYear" placeholder="${progYear}" value="${progYear}"
+ 			disabled="true"/>
+ 		</div>
+ 		
+ 		<input data-theme="b" type="submit" data-icon="check" value="Modify Programme" id="modify"/>
+  	</form:form> 
+  	
+  </body>
+</html> 

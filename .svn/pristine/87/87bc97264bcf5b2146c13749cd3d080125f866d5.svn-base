@@ -1,0 +1,38 @@
+<%-- <%@ include file="/WEB-INF/jsp/include.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+$(function() {
+$("#modify").click(function(){	
+	var lastName = $("#lastName").val();
+	var studentId=${student.studentId};
+	var url="/student/modify/id/"+studentId+"/lastname/"+lastName;
+	location.href="<%= request.getContextPath() %>"+url;
+});
+});
+</script>
+</head>
+
+<body>
+<h4>${message}</h4>
+	<form:form modelAttribute="student">
+
+		<div class="ui-field-contain">
+			<form:label path="firstName">First Name</form:label>
+			<form:input path="firstName" value="${student.firstName}" disabled="true" />
+		</div>
+		<div class="ui-field-contain">
+			<form:label path="lastName">Last Name</form:label>
+			<form:input path="lastName" id="lastName" value="${student.lastName}"/>
+		</div>
+		<div class="ui-field-contain">
+			<form:label path="email">Email</form:label>
+			<form:input path="email" value="${student.email}" disabled="true" />
+		</div>
+
+		<input type="button" class="ui-btn" data-theme="a" data-icon="check"
+			value="Modify" id="modify" />
+	</form:form>
+</body>
+</html>       --%>

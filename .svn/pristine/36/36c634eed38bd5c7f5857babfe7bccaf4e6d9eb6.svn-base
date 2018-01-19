@@ -1,0 +1,59 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+$(function() {
+$("#modify").click(function(){ 
+	var name=$("#name").val(); 
+	var moduleId = $("#moduleId").val();  
+	var crnNumber= $("#crnNumber").val(); 
+	var url="/admin/module/modify/id/"+moduleId+"/crn/"+crnNumber+"/name/"+name;
+	location.href="<%=request.getContextPath()%>" + url;
+				});
+	});
+</script>
+</head>
+<body>
+	<h4 style="position: relative; bottom: 40px">${message}</h4>
+	<form:form style="position:relative; bottom:40px"
+		modelAttribute="module">
+
+
+		<div class="ui-field-contain">
+			<form:label path="moduleId">Module Id</form:label>
+			<form:input path="moduleId" id="moduleId" value="${moduleId}"
+				disabled="true" />
+		</div>
+
+
+		<div class="ui-field-contain">
+			<form:label path="crnNumber">CRN Number</form:label>
+			<form:input path="crnNumber" id="crnNumber" value="${crnNumber}"
+				disabled="true" />
+		</div>
+
+		<div class="ui-field-contain">
+			<form:label path="name">Module Name</form:label>
+			<form:input path="name" id="name" value="${name}" />
+		</div>
+
+		<div class="ui-field-contain">
+			<form:label path="lectId">Lecturer ID</form:label>
+			<form:input path="lectId" id="lectId" value="${lectId}"
+				disabled="true" />
+		</div>
+
+		<div class="ui-field-contain">
+			<form:label path="semesterId">Semester Id:</form:label>
+			<form:input path="semesterId" id="semesterId" value="${semesterId}"
+				disabled="true" />
+		</div>
+
+
+		<input type="button" class="ui-btn" data-theme="b" data-icon="check"
+			value="Modify" id="modify" />
+	</form:form>
+</body>
+</html>

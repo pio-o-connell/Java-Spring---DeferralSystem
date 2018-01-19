@@ -1,0 +1,179 @@
+package com.grouptwo.repository;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+import com.grouptwo.domain.Module;
+import com.grouptwo.domain.Registration;
+import com.grouptwo.repository.ModuleJdbcDaoSupport;
+import com.grouptwo.repository.RegistrationJdbcDaoSupport;
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+
+
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({ "classpath:configuration.xml" })
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+		DbUnitTestExecutionListener.class })
+
+public class ModuleJdbcDaoSupportTest {
+	@Autowired
+	ApplicationContext autoWireContext;
+	ModuleJdbcDaoSupport moduleJdbcDaoSupport;
+	RegistrationJdbcDaoSupport registrationJdbcDaoSupport;
+	
+	
+
+	//Test for Create Module method
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void testCreateModule() {
+		
+		//Confirm table row count
+		moduleJdbcDaoSupport = (ModuleJdbcDaoSupport) autoWireContext.getBean("moduleJdbcDaoSupport");
+		moduleJdbcDaoSupport.createModule("COMP6029", 23057, "Networking Systems", "L001","KCMSD_Y5_S1");
+		int rowCount = moduleJdbcDaoSupport.countRows();
+		assertEquals(5, rowCount);
+	}
+	
+	//Test for Delete Module method
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void testDeleteModule() {
+		
+		//Confirm table row count
+		moduleJdbcDaoSupport = (ModuleJdbcDaoSupport) autoWireContext.getBean("moduleJdbcDaoSupport");
+		moduleJdbcDaoSupport.deleteModule("COMP8016",24249);
+		int rowCount = moduleJdbcDaoSupport.countRows();
+		assertEquals(3, rowCount);
+	}
+	
+	//Test for creating Multiple Modules
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void testCreateMultipleModules(){
+		
+		//Create 3x Modules
+		Module module1=new Module("COMP6029", 23057, "Networking Systems", "L001","KCMSD_Y5_S1");
+		Module module2=new Module("COMP8021", 24247, " Mobile Applications Development", "L002","KCMSD_Y5_S2");
+		Module module3=new Module("COMP7011 ", 23318, " Internet & Network Services", "L002","KCLDC_Y4_S1");
+		
+		//Add 3x Modules to ArrayList
+		List<Module> batchLectures=new ArrayList<Module>();
+		batchLectures.add(module1);
+		batchLectures.add(module2);
+		batchLectures.add(module3);
+		
+		//Confirm table row count
+		moduleJdbcDaoSupport = (ModuleJdbcDaoSupport) autoWireContext.getBean("moduleJdbcDaoSupport");
+		moduleJdbcDaoSupport.createMultipleModules(batchLectures);
+		int rowCount = moduleJdbcDaoSupport.countRows();
+		assertEquals(7, rowCount);
+	}
+	
+	//Test for retrieving a specfic Module using ID and CRN
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void testGetModule(){
+		
+		//Expected String Values
+		String expectedModuleName= "Cloud Computing with Python";
+		String expectedModuleSemester= "KCLDC_Y4_S1";
+		String expectedModuleLecturer="L001";
+		
+		//Actual String Values
+		moduleJdbcDaoSupport = (ModuleJdbcDaoSupport) autoWireContext.getBean("moduleJdbcDaoSupport");
+		Module actualModule= moduleJdbcDaoSupport.getModule("COMP8038", 23317);
+		String actualModuleName= actualModule.getName();
+		String actualModuleSemester= actualModule.getSemesterId();
+		String actualModuleLecturer= actualModule.getLectId();
+		
+		//Compare Expected vs Actual
+		assertEquals(expectedModuleName, actualModuleName);
+		assertEquals(expectedModuleSemester, actualModuleSemester);
+		assertEquals(expectedModuleLecturer, actualModuleLecturer);
+	}
+	
+	//Test for retrieving list of Modules
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void testListModules(){
+		
+		//Confirm List size and Module Names
+		moduleJdbcDaoSupport = (ModuleJdbcDaoSupport) autoWireContext.getBean("moduleJdbcDaoSupport");
+		List<Module> modules=moduleJdbcDaoSupport.listModules();
+		assertEquals(modules.size(), 4);	
+		assertEquals(modules.get(0).getName(), "Business Intelligence");
+		assertEquals(modules.get(3).getName(), "Cloud Application Frameworks");
+		
+	}
+	//Test for retrieving all the Modules corresponding to a Student ID
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void testListStudentModules(){
+			
+		//Confirm List size and Module Names
+		moduleJdbcDaoSupport = (ModuleJdbcDaoSupport) autoWireContext.getBean("moduleJdbcDaoSupport");
+		List<Module> modules=moduleJdbcDaoSupport.listStudentModules("R0020934");
+		assertEquals(modules.size(), 2);	
+		assertEquals(modules.get(0).getName(), "Business Intelligence");
+		assertEquals(modules.get(1).getName(), "Cloud Computing with Python");
+				
+				
+	}
+	//Test for registering a student for a module
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void testRegisterStudentForModule(){
+			
+		//Confirm table row count
+		moduleJdbcDaoSupport = (ModuleJdbcDaoSupport) autoWireContext.getBean("moduleJdbcDaoSupport");
+		moduleJdbcDaoSupport.registerStudentForModule("R0020934", 24248);
+		int rowCount = moduleJdbcDaoSupport.countRows();
+		assertEquals(4, rowCount);
+			
+		//Test that the corresponding Programme ID is correct for the CRN
+		registrationJdbcDaoSupport = (RegistrationJdbcDaoSupport) autoWireContext.getBean("registrationJdbcDaoSupport");
+		List<Registration> registrations=registrationJdbcDaoSupport.listRegistrations();
+		assertEquals(registrations.get(3).getProgrammeId(), "KCMSD_Y5");
+	
+	
+	}
+	
+	@Test
+	@DatabaseSetup(value="classpath:databaseEntries.xml", type=DatabaseOperation.CLEAN_INSERT)
+	public void testUpdateModuleName() {
+		moduleJdbcDaoSupport = (ModuleJdbcDaoSupport) autoWireContext.getBean("moduleJdbcDaoSupport");
+		moduleJdbcDaoSupport.updateModuleName("COMP8016", 22780, "Networking");
+		assertEquals("Networking", moduleJdbcDaoSupport.getModule("COMP8016",22780).getName());
+	}
+	
+	@Test
+	@DatabaseSetup(value="classpath:databaseEntries.xml", type=DatabaseOperation.CLEAN_INSERT)
+	public void testListModulesByLecturer() {
+		moduleJdbcDaoSupport = (ModuleJdbcDaoSupport) autoWireContext.getBean("moduleJdbcDaoSupport");
+		List<Module> moduleList = moduleJdbcDaoSupport.listModulesByLecturer("L001");
+		List<String> moduleNamesList = new ArrayList<String>();
+		for(Module module: moduleList){
+			moduleNamesList.add(module.getName());
+		}
+		
+		assertEquals(2, moduleList.size());
+		assertTrue(moduleNamesList.contains("Cloud Computing with Python"));
+		assertTrue(moduleNamesList.contains("Cloud Application Frameworks"));
+	}
+		
+}

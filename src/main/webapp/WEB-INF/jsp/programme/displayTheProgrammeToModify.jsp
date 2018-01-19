@@ -1,0 +1,30 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+
+				<!--  @author Dale Cusack -->
+
+	<!-- Form for user to add in attributes to create a new Programme
+	When Save button pressed data stored in model attribute newProgramme
+	/programme/addProg url generated -->
+	<form:form method="POST" action="modifiedProg" modelAttribute="modifiedProg">
+	
+		<div class="ui-field-contain">
+ 			<form:label path="programmeId">ProgrammeId</form:label>
+ 			<form:input path="programmeId"  value="${programmeId}" disabled="true"/>
+ 			
+ 		</div>
+ 		<div class="ui-field-contain">
+ 			<form:label path="numYears">Number Of Years</form:label>
+ 			<form:input path="numYears"  value="${numYears}" disabled="true"/>
+ 		</div>
+ 		<div class="ui-field-contain">
+ 			<form:label path="coordinatorId">Coordinator</form:label>
+ 			<form:input path="coordinatorId"  value="${coordinatorId}"/>
+ 		</div>
+ 		<div class="ui-field-contain">
+ 			<form:label path="progYear">Programme Year</form:label>
+ 			<form:input path="progYear" value="${progYear}" disabled="true"/>
+ 		</div>
+ 		
+ 		<input data-theme="b" type="submit" class="button" data-icon="check" value="Modify Programme" />
+  	</form:form> 

@@ -1,0 +1,29 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+<form:form method="POST" action="addModuleDeferral" modelAttribute="deferral">
+
+<form:errors path="*" cssClass="errorblock" element="div" />
+
+
+ <div class="ui-field-contain">
+ <form:label path="studentId">Student ID</form:label>
+ <form:input path="studentId" placeholder="Your Student ID.." value=""/>
+ <form:errors path="studentId" cssClass="error" class="notification error" style="display:block"></form:errors>
+ </div>
+ 
+ <div class="ui-field-contain">
+ <form:label path="moduleId">Module ID</form:label>
+ <form:input path="moduleId" placeholder="Module Id.."   value=""/>
+ <form:errors path="moduleId" cssClass="error" class="notification error" style="display:block"></form:errors>
+ </div>
+ 
+ <div class="ui-field-contain">
+ <form:label path="programmeId">CRN</form:label>
+ <form:input path="programmeId" placeholder="CRN.."   value=""/>
+ <form:errors path="programmeId" cssClass="error" class="notification error" style="display:block"></form:errors>
+ </div>
+ 
+
+ 
+ <input data-theme="b" type="submit" data-icon="check" value="Save" />
+  </form:form> 

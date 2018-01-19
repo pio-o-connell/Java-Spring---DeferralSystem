@@ -1,0 +1,47 @@
+package com.grouptwo.service;
+
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.springframework.stereotype.Service;
+
+import com.grouptwo.domain.Programme;
+
+@Service
+public interface ProgrammeDAO {
+	/**
+	 * This is the method to be used to initialize database resources ie.
+	 * connection.
+	 */
+	public void setDataSource(DataSource ds);
+
+	/**
+	 * This is the method to be used to create a record in the Programme table.
+	 */
+	public void createProgramme(String programmeId, int numYears,
+			String coordinatorId, String startMonth);
+
+	/**
+	 * This is the method to be used to delete a record from the Programme table
+	 * corresponding to a passed Programme ID.
+	 */
+	public void deleteProgramme(String programmeId);
+
+	/**
+	 * This is the method to be used to return a student's registered Programme
+	 * ID.
+	 */
+	public String getStudentProgrammeId(String studId);
+
+	/**
+	 * This is the method to be used to list down all the records from the
+	 * Programme table.
+	 */
+	public List<Programme> listProgrammes();
+
+	/**
+	 * This is the method used to count the rows in the table.
+	 */
+	public int countRows();
+}

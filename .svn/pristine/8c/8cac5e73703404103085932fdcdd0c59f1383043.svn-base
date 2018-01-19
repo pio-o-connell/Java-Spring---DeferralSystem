@@ -1,0 +1,33 @@
+package com.grouptwo.domain;
+
+public class Lecturer extends Person {
+
+	private String lectId;
+
+	public Lecturer() {
+		// blank constructor
+	}
+
+	public Lecturer(String lectId, String firstName, String lastName,
+			String email) {
+		super(firstName, lastName, email);
+		this.lectId = lectId;
+
+	}
+
+	public String getLectId() {
+		return lectId;
+	}
+
+	public void setLectId(String lectId) {
+		this.lectId = lectId;
+	}
+
+	@Override
+	public String toString() {
+		return "Lecturer [LectId=" + getLectId() + ", FirstName="
+				+ getFirstName() + ", LastName=" + getLastName() + ", Email="
+				+ getEmail() + "]";
+	}
+
+}

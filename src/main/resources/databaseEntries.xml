@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <lecturer Lect_ID="L001" Firstname="Mary" Surname="Griffin" Lecturer_Email="MaryGriff@myCIT.ie"/>
+    <lecturer Lect_ID="L002" Firstname="John" Surname="Murphy" Lecturer_Email="JohnM@myCIT.ie"/>
+    <lecturer Lect_ID="L003" Firstname="David" Surname="Johnson" Lecturer_Email="DaveJohnson2@myCIT.ie"/>
+    
+    <student Student_ID="R0004444" Firstname="Bill" Surname="O'donoghue" Student_Email="billodonoghue17@myCIT.ie"/>
+    <student Student_ID="R0020934" Firstname="Jean" Surname="Maguire" Student_Email="jeanmaguire6@myCIT.ie"/>
+    
+    <programme Programme_ID="KCMSD_Y5" Num_Years="5" Coord_ID="L001" Prog_Year="5"/>
+    <programme Programme_ID="KCLDC_Y4" Num_Years="4" Coord_ID="L002" Prog_Year="4"/>
+    
+    <semester Semester_ID="KCMSD_Y5_S1" Programme_ID="KCMSD_Y5" StartDate="Jan" FinishDate="May"/>
+    <semester Semester_ID="KCMSD_Y5_S2" Programme_ID="KCMSD_Y5" StartDate="Sept" FinishDate="Dec"/>
+    <semester Semester_ID="KCLDC_Y4_S1" Programme_ID="KCLDC_Y4" StartDate="Sept" FinishDate="Dec"/>
+    <semester Semester_ID="KCLDC_Y4_S2" Programme_ID="KCLDC_Y4" StartDate="Jan" FinishDate="May"/>
+    
+    <modules Module_ID="COMP8040" CRN="24248" Name="Cloud Application Frameworks" Lect_ID="L001" Semester_ID="KCMSD_Y5_S2"/>
+    <modules Module_ID="COMP8016" CRN="24249" Name="Business Intelligence" Lect_ID="L002" Semester_ID="KCMSD_Y5_S2"/>
+    <modules Module_ID="COMP8038" CRN="23317" Name="Cloud Computing with Python" Lect_ID="L001" Semester_ID="KCLDC_Y4_S1"/>
+    <modules Module_ID="COMP8016" CRN="22780" Name="Business Intelligence" Lect_ID="L002" Semester_ID="KCLDC_Y4_S1"/>
+    
+    <registration Student_ID="R0004444" CRN="24248" Programme_ID="KCMSD_Y5"/>
+    <registration Student_ID="R0020934" CRN="22780" Programme_ID="KCLDC_Y4"/>
+    <registration Student_ID="R0020934" CRN="23317" Programme_ID="KCLDC_Y4"/>
+   	
+   	<users USER_ID="100" USERNAME="L001" PASSWORD="123456" ENABLED="TRUE"/>
+   	<users USER_ID="101" USERNAME="Bill" PASSWORD="123456" ENABLED="TRUE"/>
+   	
+   	<user_roles USER_ROLE_ID="0" USER_ID="100" AUTHORITY="ROLE_ADMIN"/>
+   	<user_roles USER_ROLE_ID="1" USER_ID="101" AUTHORITY="ROLE_USER"/>
+   	
+    
+</dataset>

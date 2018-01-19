@@ -1,0 +1,49 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+<head>
+	<style>
+		.error {
+			color: #ff0000;
+		}
+
+		
+	</style>
+</head>
+
+<form:form method="POST" action="addNew" modelAttribute="lecturer">
+
+<%-- 	<form:errors path="*" cssClass="errorblock" element="div" /> --%>
+	
+	<div class="ui-field-contain">
+		<form:label path="lectId">Lecturer ID</form:label>
+		<form:input path="lectId" placeholder="Enter Lecturer ID .." value=""/>
+		<form:errors path="lectId" cssClass="error" class="notification error" 
+			style="display:block"></form:errors>
+	</div>
+	
+	<div class="ui-field-contain">
+		<form:label path="firstName">First Name</form:label>
+		<form:input path="firstName" placeholder="Enter Lecturer first name .." value=""/>
+		<form:errors path="firstName" cssClass="error" class="notification error" 
+			style="display:block"></form:errors>
+	</div>
+	
+	<div class="ui-field-contain">
+		<form:label path="lastName">Last Name</form:label>
+		<form:input path="lastName" placeholder="Enter Lecturer last name .." value=""/>
+		<form:errors path="lastName" cssClass="error" class="notification error" 
+			style="display:block"></form:errors>
+	</div>
+	
+	<div class="ui-field-contain">
+		<form:label path="email">Lecturer Email</form:label>
+		<form:input path="email" placeholder="Enter Lecturer Email .." value="" type="email"/>
+		<form:errors path="email" cssClass="error" class="notification error" 
+			style="display:block"></form:errors>
+	</div>
+	
+	
+	
+	
+	<input data-theme="a" type="submit" data-icon="check" value="Save" />
+</form:form>

@@ -1,0 +1,55 @@
+package com.grouptwo.domain;
+
+public class Programme {
+
+	private String programmeId;
+	private int numYears;
+	private String coordinatorId;
+	private int progYear;
+
+	public Programme() {
+		// Blank Contructor
+	}
+
+	public Programme(String programmeId, int numYears, String coordinatorId, int progYear) {
+		super();
+		this.programmeId = programmeId;
+		this.numYears = numYears;
+		this.coordinatorId = coordinatorId;
+		this.progYear = progYear;
+	}
+
+	public String getProgrammeId() {
+		return programmeId;
+	}
+
+	public void setProgrammeId(String programmeId) {
+		this.programmeId = programmeId;
+	}
+
+	public int getNumYears() {
+		return numYears;
+	}
+
+	public void setNumYears(int numYears) {
+		this.numYears = numYears;
+	}
+
+	public String getCoordinatorId() {
+		return coordinatorId;
+	}
+
+	public void setCoordinatorId(String coordinatorId) {
+		this.coordinatorId = coordinatorId;
+	}
+
+
+	public int getProgYear() {
+		return progYear;
+	}
+
+	public void setProgYear(int progYear) {
+		this.progYear = progYear;
+	}
+
+}

@@ -1,0 +1,43 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+<h2 class=ui-field-contains2>${ message}</h2>
+<table data-role="table" class="ui-responsive" data-mode="" id="myTable">
+  <thead>
+    <tr>
+    <th data-priority="5">Module ID </th>
+    <th data-priority="3">CRN Number</th>
+    <th data-priority="4">Module Name</th>
+    <th data-priority="1">Lecturer ID</th>
+    <th data-priority="2">Semester ID</th>    
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+    <%--
+   	  <td><img alt="deferral" width="24" border="0" align="middle" src="<c:url value="/resources/images/songwriter1.jpg"/>"></td>
+   	  --%>
+      <td>${moduleId}</td>
+      <td>${crnNumber}</td>
+      <td>${name}</td>
+      <td>${lectId}</td>  
+      <td>${semesterId}</td>   
+     
+     <%--  <td><a href="<%= request.getContextPath() %>/songwriter/downloadImage/${songwriter.id}"
+						class="ui-btn">Download Image</a></td> 
+               --%>
+           
+    </tr>
+  </tbody>
+ 
+</table>
+<br>
+<br>
+<small><fmt:formatDate value="${now}" pattern="hh:mma MMM d, yyyy" /></small>		
+		
+	
+	<c:if test="${empty moduleId}">
+	<div class="notification warning">
+		No modules.
+	</div>
+	</c:if> 

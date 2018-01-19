@@ -1,0 +1,29 @@
+package com.grouptwo.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.grouptwo.domain.Module;
+import com.grouptwo.service.ModuleDAO;
+
+
+@Controller
+@RequestMapping("/module")
+public class ModuleController {
+	@Autowired
+	ModuleDAO moduleDAO;
+	
+	@RequestMapping(value="/listall",method=RequestMethod.GET)
+	public String listAll(ModelMap model){
+		List<Module> listModules = moduleDAO.listModules();
+		model.addAttribute("modules",listModules);
+		return "displayModules";
+	}
+	
+
+}

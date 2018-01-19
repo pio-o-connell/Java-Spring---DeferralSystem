@@ -1,0 +1,65 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+	<c:if test="${not empty students}">
+	
+	<table data-role="table" class="ui-responsive" data-mode="columntoggle" id="myTable">
+		<thead>
+			<tr>
+				<th data-priority="2">Student Id</th>
+				<th> First Name</th>
+				<th> Last Name</th>
+				<th data-priority="3">Email</th>
+				<th data-priority="4">Details</th>
+				<th data-priority="5">Delete</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+		<c:forEach var="student" items="${students}" varStatus="status">
+			<tr>
+				<td>${student.studentId}</td>
+				<td>${student.firstName}</td>
+				<td>${student.lastName}</td>
+				<td>${student.email}</td>
+				<td><a href="<%= request.getContextPath() %>/student/display/id/${status.current.studentId}"
+						class="ui-btn">Details</a></td>
+				<td><a href="<%= request.getContextPath() %>/student/delete/id/${status.current.studentId}"
+						class="ui-btn">Delete</a></td>
+			</tr>
+		</c:forEach>			
+		</tbody>
+	</table>
+	</c:if>
+	
+	<c:if test="${empty students}">
+		<div class="notification warning">
+		No students.
+	</div>
+	</c:if>
+
+
+
+
+
+
+
+
+<%-- <%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+	<c:if test="${not empty students}">
+		<ol class="students-list">
+			<c:forEach var="student" items="${students}">
+				<li>
+				<span class="songwriterImage"> 
+				<img alt="songwriter" width="48" border="0" align="middle" src="<c:url value="/resources/images/songwriter1.jpg"/>">	
+				</span>
+				<span class="studentText"> 
+				<c:out	value="${student.firstName}" />
+				<c:out value="${student.lastName}" /><br />
+				<small><fmt:formatDate value="${now}" pattern="hh:mma MMM d, yyyy" /></small>
+				</span>
+				</li>
+
+			</c:forEach>
+		</ol>
+	</c:if> --%>

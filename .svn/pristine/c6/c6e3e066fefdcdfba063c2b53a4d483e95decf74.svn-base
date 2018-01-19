@@ -1,0 +1,42 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+
+<form:form method="POST" action="addModuleDeferralPage2"
+	modelAttribute="deferral">
+
+	<form:errors path="*" cssClass="errorblock" element="div" />
+
+
+	
+		<form:input path="studentId"  value="${studentId}" type="hidden"/>
+		<form:errors path="studentId" cssClass="error"
+			class="notification error" style="display:block"></form:errors>
+	
+	
+	<p class="ui-field-contain">Student's name: ${studentFirstName} ${studentLastName} 
+	<dir class="ui-field-contain">Student's ID: ${studentId}</dir>
+
+	<div class="dropdown2">
+	<form:select path="moduleId" id="moduleId">
+		<form:option value="moduleId">Choose Module to Defer</form:option>
+		<c:forEach var="moduleList" items="${moduleList}">
+			<form:option value="${moduleList.name}"></form:option>
+		</c:forEach>
+		<form:errors path="moduleId" cssClass="error"
+			class="notification error" style="display:block"></form:errors>
+	</form:select>
+</div>
+
+	<div class="dropdown2">
+	<form:select path="programmeId" id="programmeId">
+		<form:option value="programmeId">Choose CRN</form:option>
+		<c:forEach var="moduleList" items="${moduleList}">
+			<form:option value="${moduleList.crnNumber}"></form:option>
+		</c:forEach>
+		<form:errors path="programmeId" cssClass="error"
+			class="notification error" style="display:block"></form:errors>
+	</form:select>
+</div>
+
+	<input data-theme="b" type="submit" data-icon="check" value="Save" />
+</form:form>

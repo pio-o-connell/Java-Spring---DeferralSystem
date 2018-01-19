@@ -1,0 +1,59 @@
+package com.grouptwo.domain;
+
+public class UserRoles {
+	
+	int userRoleId;
+	int userId;
+	String authority;
+	
+	public UserRoles() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public UserRoles(int userRoleId, int userId, String authority) {
+		super();
+		this.userRoleId = userRoleId;
+		this.userId = userId;
+		this.authority = authority;
+	}
+	/**
+	 * @return the userRoleId
+	 */
+	public int getUserRoleId() {
+		return userRoleId;
+	}
+	/**
+	 * @param userRoleId the userRoleId to set
+	 */
+	public void setUserRoleId(int userRoleId) {
+		this.userRoleId = userRoleId;
+	}
+	/**
+	 * @return the userId
+	 */
+	public int getUserId() {
+		return userId;
+	}
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	/**
+	 * @return the authority
+	 */
+	public String getAuthority() {
+		return authority;
+	}
+	/**
+	 * @param authority the authority to set
+	 */
+	public void setAuthority(String authority) {
+		this.authority = authority;
+	}
+	
+	
+
+}

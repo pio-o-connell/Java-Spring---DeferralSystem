@@ -1,0 +1,66 @@
+package com.grouptwo.controllers;
+
+import java.net.UnknownHostException;
+import java.util.List;
+
+import com.grouptwo.domain.User;
+import com.grouptwo.domain.UserRoles;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+
+
+
+/**
+ * The Class Login.Incorporating mongoDB
+ * @author Dale Cusack
+ */
+public class Login {
+
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
+	public static void main(String[] args) {
+		
+			try {
+				MongoClient mongo = new MongoClient("localhost", 27017);
+				DB db = mongo.getDB("group_two_login");
+				User user1 = new User(100,"L001","123456");
+				UserRoles user1Role = new UserRoles(1, 100, "ROLE_ADMIN");
+				
+				BasicDBObject doc = new BasicDBObject("USER_ID", user1.getUserId())
+		        .append("USERNAME", user1.getUserName())
+		        .append("PASSWORD", user1.getPassword());
+				
+				BasicDBObject doc1 = new BasicDBObject("USER_ROLE_ID", user1Role.getUserRoleId())
+		        .append("USER_ID", user1Role.getUserId())
+		        .append("AUTHORITY", user1Role.getAuthority());
+		        
+		        DBCollection col = db.getCollection("users");//get collection if not there will be created
+		        
+		        col.insert(doc);
+		        col.insert(doc1);
+		        
+		        /*DBObject myDoc = col.findOne();
+		        System.out.println(myDoc);*/
+
+
+				
+				/*List<String> dbs = mongo.getDatabaseNames();
+				System.out.println("sds"+dbs);*/
+
+
+			}catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	
+
+}

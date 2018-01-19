@@ -1,0 +1,72 @@
+package com.grouptwo.domain;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
+import com.sun.istack.internal.NotNull;
+/**
+ * 
+ * @author Dale Cusack
+ *
+ */
+public class Programme {
+	@Size(min=5, max=20, message="A Programme id cannot have less than 5 characters or more than 8")
+	private String programmeId;
+	@NotNull 
+	@Min(value=1, message="The Number of Years must be at least 1") 
+	@Max(value=5, message="The Number of Years must be a  maximum of 5") 
+	private int numYears;
+	@Size(min=4, max=4, message="A coordinator id must be 4 characters")
+	private String coordinatorId;
+	@NotNull 
+	@Min(value=1, message="The programme year must be at least 1") 
+	@Max(value=10, message="The programme year must be a  maximum of 10") 
+	private int progYear;
+
+	public Programme() {
+		// Blank Contructor
+	}
+
+	public Programme(String programmeId, int numYears, String coordinatorId, int progYear) {
+		super();
+		this.programmeId = programmeId;
+		this.numYears = numYears;
+		this.coordinatorId = coordinatorId;
+		this.progYear = progYear;
+	}
+
+	public String getProgrammeId() {
+		return programmeId;
+	}
+
+	public void setProgrammeId(String programmeId) {
+		this.programmeId = programmeId;
+	}
+
+	public int getNumYears() {
+		return numYears;
+	}
+
+	public void setNumYears(int numYears) {
+		this.numYears = numYears;
+	}
+
+	public String getCoordinatorId() {
+		return coordinatorId;
+	}
+
+	public void setCoordinatorId(String coordinatorId) {
+		this.coordinatorId = coordinatorId;
+	}
+
+
+	public int getProgYear() {
+		return progYear;
+	}
+
+	public void setProgYear(int progYear) {
+		this.progYear = progYear;
+	}
+
+}

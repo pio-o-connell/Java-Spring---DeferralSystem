@@ -1,0 +1,392 @@
+package com.grouptwo.mvc;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.*;
+import org.junit.runner.RunWith;
+
+import static org.junit.Assert.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.grouptwo.domain.Lecturer;
+import com.grouptwo.repository.LecturerDAO;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({ "classpath:configuration.xml" })
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+	DbUnitTestExecutionListener.class })
+
+public class LecturerSeleniumTest {
+	
+	@Autowired
+	LecturerDAO lecturerDAO;
+
+	private WebDriver driver;
+	private String baseUrl;
+	private StringBuffer verificationErrors = new StringBuffer();
+
+
+	@Before
+	public void setUp() throws Exception {
+		driver = new FirefoxDriver();
+		baseUrl = "http://localhost:8080/";
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+	}
+
+	/**
+	 * @author Julia Foden
+	 * @throws InterruptedException
+	 * This test checks that the list of lecturers is correctly displayed
+	 */
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void LecturerListAllSeleniumTest() throws InterruptedException{
+		driver.get(baseUrl + "/SpringWebProject/home");
+		driver.findElement(By.linkText("Menu Options")).click();
+		driver.findElement(By.xpath("//div[@id='myPanelDefault']/div/div/div[2]/h1/a")).click();
+		driver.findElement(By.xpath("//a[contains(text(),'Lecturers')]")).click();
+
+		assertEquals("Lecturers List", driver.getTitle());
+		assertEquals("List of Lecturers", driver.findElement(By.xpath("//div[@id='pageone']/div/h4")).getText());
+		Thread.sleep(1000);
+		int numLecDB = lecturerDAO.listLecturers().size();
+		int numLecOnScreen = driver.findElements(By.xpath("//table[@id='lecturerTable']/tbody/tr/td[1]/a")).size();
+		assertEquals(numLecDB, numLecOnScreen);
+	}
+
+	/**
+	 * 
+	 * This test checks that a lecturer can be added
+	 */
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void testCreateNewLecturerTestCase() throws Exception {
+		int numLecDBBefore = lecturerDAO.listLecturers().size();
+
+		driver.get(baseUrl + "/SpringWebProject/home");
+		driver.findElement(By.linkText("Menu Options")).click();
+		driver.findElement(By.partialLinkText("Add New")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.linkText("Lecturer")).click();
+		driver.findElement(By.id("lectId")).clear();
+		driver.findElement(By.id("lectId")).sendKeys("L010");
+		driver.findElement(By.id("firstName")).clear();
+		driver.findElement(By.id("firstName")).sendKeys("Sarah");
+		driver.findElement(By.id("lastName")).clear();
+		driver.findElement(By.id("lastName")).sendKeys("O'Brien");
+		driver.findElement(By.id("email")).clear();
+		driver.findElement(By.id("email")).sendKeys("sarahobrien@cit.ie");
+		driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
+		Thread.sleep(1000);
+		int numLecOnScreenAfter = driver.findElements(By.xpath("//table[@id='lecturerTable']/tbody/tr/td[1]/a")).size();
+		int numLecDBAfter = lecturerDAO.listLecturers().size();
+
+		assertEquals(numLecDBAfter, numLecDBBefore+1); //checking there is one more lecturer in DB
+		assertEquals(numLecDBAfter, numLecOnScreenAfter); //checking the page displays the same number as are in the DB
+
+		assertEquals("Sarah", lecturerDAO.getLecturer("L010").getFirstName());
+		assertEquals("O'Brien", lecturerDAO.getLecturer("L010").getLastName());
+		assertEquals("sarahobrien@cit.ie", lecturerDAO.getLecturer("L010").getEmail());
+
+		Thread.sleep(1000);
+		assertEquals("Lecturers List", driver.getTitle());
+		assertEquals("Lecturer L010 has been added", 
+				driver.findElement(By.xpath("//div[contains(@class, 'message')]/h4")).getText());
+
+		Thread.sleep(1000);
+		assertEquals("L010", driver.findElement(By.xpath("//table[@id='lecturerTable']/tbody/tr["+numLecOnScreenAfter+"]/td[1]/a")).getText());
+		assertEquals("Sarah", driver.findElement(By.xpath("//table[@id='lecturerTable']/tbody/tr["+numLecOnScreenAfter+"]/td[2]/h3")).getText());
+		assertEquals("O'Brien", driver.findElement(By.xpath("//table[@id='lecturerTable']/tbody/tr["+numLecOnScreenAfter+"]/td[3]/h3")).getText());
+		assertEquals("sarahobrien@cit.ie", driver.findElement(By.xpath("//table[@id='lecturerTable']/tbody/tr["+numLecOnScreenAfter+"]/td[4]/h3")).getText());
+
+	}
+
+	/**
+	 * @author Julia Foden
+	 * @throws InterruptedException
+	 * This test checks that a lecturer cannot be added with a duplicate id
+	 */
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void AddLecturerDuplicateIdSeleniumTest() throws InterruptedException{
+
+		int numLecDBBefore = lecturerDAO.listLecturers().size();
+
+		driver.get(baseUrl + "SpringWebProject/");
+		driver.findElement(By.linkText("Menu Options")).click();
+		// Thread.sleep(1000);
+		driver.findElement(By.xpath("//div[@id='myPanelDefault']/div/div/div/h1/a")).click();
+		driver.findElement(By.xpath("//a[contains(text(),'Lecturer')]")).click();
+		driver.findElement(By.id("lectId")).clear();
+		driver.findElement(By.id("lectId")).sendKeys("L001"); //same as an existing lecturer
+		driver.findElement(By.id("firstName")).clear();
+		driver.findElement(By.id("firstName")).sendKeys("John");
+		driver.findElement(By.id("lastName")).clear();
+		driver.findElement(By.id("lastName")).sendKeys("Brown");
+		driver.findElement(By.id("email")).clear();
+		driver.findElement(By.id("email")).sendKeys("johnb@cit.ie");
+		driver.findElement(By.xpath("//input[@value='Save']")).click();
+
+		int numLecOnScreenAfter = driver.findElements(By.xpath("//table[@id='lecturerTable']/tbody/tr/td[1]/a")).size();
+		int numLecDBAfter = lecturerDAO.listLecturers().size();
+		assertEquals(numLecDBAfter, numLecOnScreenAfter); //testing that number on screen matches number in DB
+		assertEquals(numLecDBAfter, numLecDBBefore); //testing that no change in the DB
+
+		Thread.sleep(1000);
+		assertEquals("Lecturers List", driver.getTitle());
+		assertEquals("Creation of new lecturer failed.", 
+				driver.findElement(By.xpath("//div[contains(@class, 'message')]/h4")).getText());
+	}
+
+
+	/**
+	 * @author Julia Foden
+	 * @throws InterruptedException
+	 * This test checks that a lecturer cannot be added with names which are not valid
+	 */
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void AddLecturerInvalidSeleniumTest() throws InterruptedException{
+
+		int numLecDBBefore = lecturerDAO.listLecturers().size();
+
+		driver.get(baseUrl + "SpringWebProject/");
+		driver.findElement(By.linkText("Menu Options")).click();
+		driver.findElement(By.xpath("//div[@id='myPanelDefault']/div/div/div/h1/a")).click();
+		driver.findElement(By.xpath("//a[contains(text(),'Lecturer')]")).click();
+		driver.findElement(By.id("lectId")).clear();
+		driver.findElement(By.id("lectId")).sendKeys("L010");
+		driver.findElement(By.id("firstName")).clear();
+		driver.findElement(By.id("firstName")).sendKeys("J");
+		driver.findElement(By.id("lastName")).clear();
+		driver.findElement(By.id("lastName")).sendKeys("B");
+		driver.findElement(By.id("email")).clear();
+		driver.findElement(By.id("email")).sendKeys("johnb@cit.ie");
+		driver.findElement(By.xpath("//input[@value='Save']")).click();
+
+		int numLecDBAfter = lecturerDAO.listLecturers().size();
+		assertEquals(numLecDBAfter, numLecDBBefore); //testing that no change in the DB
+		Thread.sleep(1000);
+		assertEquals("Add New Lecturer", driver.getTitle());
+		assertEquals("First name must be not less than two and not more than 30 characters", driver.findElement(By.id("firstName.errors")).getText());
+		assertEquals("Last name must be not less than two and not more than 30 characters", driver.findElement(By.id("lastName.errors")).getText());
+
+	}
+
+	/**
+	 * @author Julia Foden
+	 * @throws InterruptedException
+	 * This test checks that a lecturer cannot be added with invalid email address
+	 */
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void AddLecturerInvalidEmailSeleniumTest() throws InterruptedException{
+
+		int numLecDBBefore = lecturerDAO.listLecturers().size();
+
+		driver.get(baseUrl + "SpringWebProject/");
+		driver.findElement(By.linkText("Menu Options")).click();
+		driver.findElement(By.xpath("//div[@id='myPanelDefault']/div/div/div/h1/a")).click();
+		driver.findElement(By.xpath("//a[contains(text(),'Lecturer')]")).click();
+		driver.findElement(By.id("lectId")).clear();
+		driver.findElement(By.id("lectId")).sendKeys("L010");
+		driver.findElement(By.id("firstName")).clear();
+		driver.findElement(By.id("firstName")).sendKeys("John");
+		driver.findElement(By.id("lastName")).clear();
+		driver.findElement(By.id("lastName")).sendKeys("Brown");
+		driver.findElement(By.id("email")).clear();
+		driver.findElement(By.id("email")).sendKeys("johnb");
+		driver.findElement(By.xpath("//input[@value='Save']")).click();
+
+		int numLecDBAfter = lecturerDAO.listLecturers().size();
+		assertEquals(numLecDBAfter, numLecDBBefore); //testing that no change in the DB
+		Thread.sleep(1000);
+		assertEquals("Add New Lecturer", driver.getTitle());
+
+	}
+
+	/**
+	 * @author Julia Foden
+	 * @throws InterruptedException
+	 * This test checks searching for a lecturer by id
+	 */
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void SearchLecturerByIdSeleniumTest() throws InterruptedException{
+
+		String id = "L001"; //the lecturer id to search for
+
+		driver.get(baseUrl + "/SpringWebProject/home");
+		driver.findElement(By.linkText("Menu Options")).click();
+		driver.findElement(By.xpath("//div[@id='myPanelDefault']/div/div/div[3]/h1/a")).click();
+		driver.findElement(By.xpath("(//a[contains(text(),'Lecturer')])[3]")).click();
+		Thread.sleep(1000);
+		new Select(driver.findElement(By.id("lectId"))).selectByVisibleText(id);
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("//input[@value='Search']")).click();
+		Thread.sleep(1000);
+		assertEquals("Display Lecturer", driver.getTitle());
+		assertEquals("Lecturer "+id, driver.findElement(By.cssSelector("h4")).getText());
+		assertEquals(id, driver.findElement(By.xpath("//table[@id='myTable']/tbody/tr/td/h3")).getText());
+		Thread.sleep(1000);
+		// testing that the  details displayed match what is in the DB
+		assertEquals(lecturerDAO.getLecturer(id).getFirstName(), driver.findElement(By.xpath("//table[@id='myTable']/tbody/tr/td[2]/h3")).getText());
+		assertEquals(lecturerDAO.getLecturer(id).getLastName(), driver.findElement(By.xpath("//table[@id='myTable']/tbody/tr/td[3]/h3")).getText());
+		Thread.sleep(1000);
+		assertEquals(lecturerDAO.getLecturer(id).getEmail(), driver.findElement(By.xpath("//table[@id='myTable']/tbody/tr/td[4]/h3")).getText());
+		assertEquals("Delete lecturer", driver.findElement(By.xpath("//div[@id='pageone']/a[3]")).getText());
+
+
+	}
+
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void testModifyLecturer() throws Exception {
+
+		String idModify = "L001";
+		driver.get(baseUrl + "/SpringWebProject/home");
+		driver.findElement(By.linkText("Menu Options")).click();
+		driver.findElement(By.partialLinkText("List All")).click();
+		driver.findElement(By.linkText("Lecturers")).click();
+		// 
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("//a[contains(text(),'Columns...')]")).click();
+		driver.findElement(By.xpath("//div[@id='lecturerTable-popup']/fieldset/div/div[3]/label")).click();
+		Thread.sleep(1000);
+
+		//checking that details on screen are as in DB
+		assertEquals(idModify, driver.findElement(By.xpath("//table[@id='lecturerTable']/tbody/tr/td/a")).getText());
+		Thread.sleep(1000);
+		assertEquals(lecturerDAO.getLecturer(idModify).getFirstName(),
+				driver.findElement(By.xpath("//table[@id='lecturerTable']/tbody/tr/td[2]/h3")).getText());
+		assertEquals(lecturerDAO.getLecturer(idModify).getLastName(), 
+				driver.findElement(By.xpath("//table[@id='lecturerTable']/tbody/tr/td[3]/h3")).getText());
+		assertEquals(lecturerDAO.getLecturer(idModify).getEmail(),
+				driver.findElement(By.xpath("//table[@id='lecturerTable']/tbody/tr/td[4]/h3")).getText());
+		Thread.sleep(1000);
+		driver.findElement(By.linkText("Modify")).click();
+		driver.findElement(By.id("lastName")).clear();
+		driver.findElement(By.id("lastName")).sendKeys("Walsh");
+		driver.findElement(By.id("modify")).click();
+
+		assertEquals("Lecturers List", driver.getTitle());
+		assertEquals("Lecturer "+idModify+" has been modified", driver.findElement(By.cssSelector("h4")).getText());
+		assertEquals(idModify, driver.findElement(By.xpath("//table[@id='lecturerTable']/tbody/tr/td/a")).getText());
+		Thread.sleep(1000);
+		//checking that new last name appears on screen 
+		assertEquals("Walsh", driver.findElement(By.xpath("//table[@id='lecturerTable']/tbody/tr/td[3]/h3")).getText());
+		assertEquals("Walsh", lecturerDAO.getLecturer(idModify).getLastName()); //checking that last name has been modified in DB
+
+
+	}
+
+	/**
+	 * @author Julia Foden
+	 * @throws InterruptedException
+	 * This test checks that a lecturer can be deleted
+	 */
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void DeleteLecturerSeleniumTest() throws InterruptedException{
+
+		int numLecDBBefore = lecturerDAO.listLecturers().size();
+		String idDelete = "L001";
+
+		driver.get(baseUrl + "SpringWebProject/");
+		driver.findElement(By.linkText("Menu Options")).click();
+		driver.findElement(By.xpath("//div[@id='myPanelDefault']/div/div/div[2]/h1/a")).click();
+		driver.findElement(By.xpath("//a[contains(text(),'Lecturers')]")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("//a[contains(text(),'"+ idDelete+"')]")).click();
+		Thread.sleep(1000);
+		assertEquals("Display Lecturer", driver.getTitle());
+		assertEquals("Lecturer "+ idDelete, driver.findElement(By.cssSelector("h4")).getText());
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("//a[contains(text(),'Delete lecturer')]")).click();
+		driver.findElement(By.xpath("//div[@id='popupDialog']/div/a[2]")).click();
+		Thread.sleep(1000);
+		assertEquals("Lecturers List", driver.getTitle());
+		assertEquals("Lecturer "+ idDelete+" has been deleted", driver.findElement(By.xpath("//div[@id='pageone']/div/h4")).getText());
+
+		int numLecDBAfter = lecturerDAO.listLecturers().size();
+		assertEquals(numLecDBAfter, numLecDBBefore-1); //testing that DB has one less lecturer
+		int numLecOnScreenAfter = driver.findElements(By.xpath("//table[@id='lecturerTable']/tbody/tr/td[1]/a")).size();
+		assertEquals(numLecOnScreenAfter, numLecDBAfter); //testing that screen displays same number of lecturers as DB
+		Thread.sleep(1000);
+		List <Lecturer> lectList = lecturerDAO.listLecturers();
+		List<String> idList = new ArrayList<String>();
+		for(Lecturer lecturer: lectList){
+			idList.add(lecturer.getLectId());
+		}
+		assertFalse(idList.contains(idDelete)); //testing that no lecturer exists with id just deleted
+	}
+
+	/**
+	 * @author Julia Foden
+	 * @throws InterruptedException
+	 * This test checks that a lecturer is not deleted when cancel is selected in the popup
+	 */
+	@Test
+	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	public void DeleteLecturerCancelSeleniumTest() throws InterruptedException{
+
+		int numLecDBBefore = lecturerDAO.listLecturers().size();
+		String idDelete = "L001";
+
+		driver.get(baseUrl + "SpringWebProject/");
+		driver.findElement(By.linkText("Menu Options")).click();
+		driver.findElement(By.xpath("//div[@id='myPanelDefault']/div/div/div[2]/h1/a")).click();
+		driver.findElement(By.xpath("//a[contains(text(),'Lecturers')]")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("//a[contains(text(),'"+ idDelete+"')]")).click();
+		Thread.sleep(1000);
+		assertEquals("Display Lecturer", driver.getTitle());
+		assertEquals("Lecturer "+ idDelete, driver.findElement(By.cssSelector("h4")).getText());
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("//a[contains(text(),'Delete lecturer')]")).click();
+		driver.findElement(By.xpath("//div[@id='popupDialog']/div/a")).click();
+		Thread.sleep(1000);
+		assertEquals("Display Lecturer", driver.getTitle());
+		assertEquals("Lecturer "+ idDelete, driver.findElement(By.cssSelector("h4")).getText());
+		Thread.sleep(1000);
+
+		int numLecDBAfter = lecturerDAO.listLecturers().size();
+		assertEquals(numLecDBAfter, numLecDBBefore); //testing that DB has the same  number of lecturers
+
+		List <Lecturer> lectList = lecturerDAO.listLecturers();
+		List<String> idList = new ArrayList<String>();
+		for(Lecturer lecturer: lectList){
+			idList.add(lecturer.getLectId());
+		}
+		assertTrue(idList.contains(idDelete)); //testing that the lecturer still exists 
+
+
+	}
+
+
+
+
+	@After
+	public void tearDown() throws Exception {
+		driver.quit();
+		String verificationErrorString = verificationErrors.toString();
+		if (!"".equals(verificationErrorString)) {
+			fail(verificationErrorString);
+		}
+
+	}
+
+}

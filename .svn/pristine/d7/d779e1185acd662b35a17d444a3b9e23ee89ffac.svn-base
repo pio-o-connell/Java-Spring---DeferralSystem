@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC  
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+       
+<tiles-definitions>  
+    <definition name="base.definition" template="/WEB-INF/jsp/templating/layout.jsp">  
+        <put-attribute name="title" value="" />  
+        <put-attribute name="header" value="/WEB-INF/jsp/templating/header.jsp" />  
+        <put-attribute name="body" value=""/>  
+        <put-attribute name="login" value=""/>  
+        <put-attribute name="footer" value="/WEB-INF/jsp/templating/footer.jsp" />  
+    </definition>  
+    
+     <definition extends="base.definition" name="home">  
+        <put-attribute name="title" value="Home"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/jsp/home.jsp"></put-attribute>  
+    </definition>
+    
+    <definition extends="base.definition" name="displayStudents">
+    	<put-attribute name="title" value="Students List"></put-attribute>
+    	<put-attribute name="body" value="/WEB-INF/jsp/student/listall.jsp"></put-attribute>
+    </definition>  
+    
+     <definition extends="base.definition" name="displayDeferrals">  
+       <put-attribute name="title" value="Deferrals List"></put-attribute>  
+       <put-attribute name="body" value="/WEB-INF/jsp/deferral/listall.jsp"></put-attribute>  
+</definition>
+</tiles-definitions>

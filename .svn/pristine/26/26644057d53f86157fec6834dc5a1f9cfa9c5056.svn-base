@@ -1,0 +1,42 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+				<!--  @author Dale Cusack, modified by Julia Foden-->
+
+	<h3>${message}</h3>
+	
+	<table data-role="table" class="ui-responsive" data-mode="columntoggle" id="myTable">
+  		<thead>
+    		<tr>
+    			<th data-priority="3">Programme ID</th>
+    			<th data-priority="4">Number Years</th>
+    			<th data-priority="1">Coordinator</th>
+    			<th data-priority="2">Programme year</th>     
+    </tr>
+  </thead>
+  
+  <tbody>
+	
+		<tr>
+			<td>${programmeId}</td>
+			<td>${numYears}</td>
+			<td><a href="<%= request.getContextPath() %>/lecturer/display/id/${coordinatorId}"
+						class="ui-btn ui-corner-all">${coordinatorId}</a></td>
+			<td>${progYear}</td>
+		</tr>
+		<%-- <c:out value="${programme.programmeId}"></c:out> --%>
+
+  </tbody>
+ 
+</table>
+
+<c:if test="${not empty deferrals}">
+<div data-role="main" class="ui-content">
+  			<a href= "<%= request.getContextPath() %>/deferral/list/id/${programmeId}"
+  				class="ui-btn ui-corner-all">View deferrals from this programme</a>
+  		</div>
+</c:if>	
+<c:if test="${empty deferrals}">
+		<div class="notification warning">
+		<p>No deferrals from this programme</p>
+	</div>
+	</c:if>

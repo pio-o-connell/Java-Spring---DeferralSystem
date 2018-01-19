@@ -1,0 +1,31 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+<h2>${message}</h2>
+
+<table data-role="table" data-mode="columntoggle" class="ui-responsive" id="myTable">
+  <thead>
+    <tr>
+    <th data-priority="2">Lecturer Id</th>
+    <th>First name</th>
+    <th>Last name</th>
+    <th data-priority="3">Email</th>     
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+     <%-- <td><img src="<c:url value="/resources/images/${id}.jpg"/>" 
+             width="48" height="48" /></td> --%>
+<%--    	  <td><img alt="songwriter" width="48" border="0" align="middle" src="<c:url value="/resources/images/songwriter1.jpg"/>"></td>
+ --%> 
+ 		<td>${id}</td>
+      <td>${firstname}</td>
+      <td>${lastname}</td>
+      <td>${email}</td>          
+    </tr>
+  </tbody>
+    	</table>
+  	<%-- <div data-role="main" class="ui-content">
+  			<a href= "<%= request.getContextPath() %>/advancedlist/lecturerId/${id}"
+  				class="ui-btn">View this lecturer's details</a>
+  		</div> --%>
+  </table>  

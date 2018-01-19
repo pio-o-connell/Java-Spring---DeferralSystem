@@ -1,0 +1,26 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+<html>
+
+<head>
+<title>Header</title>
+<link href="<c:url value="/resources/css/Group2.css" />" rel="stylesheet"></link>
+</head>
+<body>
+
+ <div>
+<ul class="tabs">
+<a href="/SpringWebProject/home" >Home</a>
+<!-- <li><a href="#">Student</a></li>
+<li><a href="#">Lecturer</a></li>
+<li><a href="#">Module</a></li>       
+<li><a href="#">Programme</a></li>  
+<li><a href="/SpringWebProject/deferral/listall">Deferral</a></li>  -->     
+</ul> 
+</div> 
+
+
+
+</body>
+</html>
+
+

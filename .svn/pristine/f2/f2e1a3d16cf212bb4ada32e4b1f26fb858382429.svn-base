@@ -1,0 +1,34 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+
+<!--  @author Niall McCarthy -->
+	
+<h2 class=ui-field-contain2>${message}</h2>
+
+<table data-role="table" class="ui-responsive" data-mode="columntoggle" id="myTable">
+  <thead>
+    <tr>
+    <th data-priority="5">Deferral ID </th>
+    <th data-priority="3">Student ID</th>
+    <th data-priority="4">Lecturer ID</th>
+    <th data-priority="1">Programme ID</th>
+    <th data-priority="2">Module ID</th>    
+    <th data-priority="2">Approval</th>  
+    </tr>
+  </thead>
+  
+  <tbody>
+    <tr>
+<%--      <td><img src="<c:url value="/resources/images/${id}.jpg"/>" 
+             width="48" height="48" /></td> 
+    	  <td><img alt="songwriter" width="48" border="0" align="middle" src="<c:url value="/resources/images/songwriter1.jpg"/>"></td>
+ --%> 
+ 		<td><h3>${id}</h3></td>
+      <td><h3>${studentId}</h3></td>
+      <td><h3>${lectId}</h3></td>
+      <td><h3>${progId}</h3></td>  
+      <td><h3>${moduleId}</h3></td>    
+      <td><h3>${approval}</h3></td>      
+    </tr>
+  </tbody>  
+  </table> 

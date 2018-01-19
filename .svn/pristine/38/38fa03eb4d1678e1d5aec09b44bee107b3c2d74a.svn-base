@@ -1,0 +1,22 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+	<c:if test="${not empty modules}">
+		<ol class="students-list">
+			<c:forEach var="module" items="${modules}">
+				<li>
+				<%-- <span class="songwriterImage"> 
+				<img alt="songwriter" width="48" border="0" align="middle" src="<c:url value="/resources/images/songwriter1.jpg"/>">	
+				</span> --%>
+				<span class="moduleText"> 
+				<c:out	value="${module.moduleId}" />
+				<c:out	value="${module.crnNumber}" />
+				<c:out value="${module.name}" />
+				<c:out value="${module.lectId}" />
+				<c:out value="${module.semesterId}" />
+				<br />
+				</span>
+				</li>
+
+			</c:forEach>
+		</ol>
+	</c:if>

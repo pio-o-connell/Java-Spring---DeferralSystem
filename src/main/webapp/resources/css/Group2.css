@@ -1,0 +1,390 @@
+@CHARSET "ISO-8859-1";
+
+body {
+	/* background: #FFFFFF url(../images/thehitpic1.jpg) no-repeat
+		fixed left top; */
+	color: #000000;
+	font-family: 'Lucida Grande', sans-serif;
+	font-size: 3em;
+	font-size-adjust: none;
+	font-stretch: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 1.5;
+	text-align: center;
+}
+
+#messageTest {
+	height: 400px;
+	width: 800px;
+	padding: 5px;
+}
+
+#homePageText {
+	width: 60%;
+	height: 100px;
+	margin-left: 18%;
+	
+}
+
+.studentText {
+	display: block;
+	width: 500px;
+	margin-left: 56px;
+	min-height: 50px;
+}
+
+.ui-page .ui-header {
+	height:200px;
+	background: #B51845;
+}
+
+.ui-page .ui-footer {
+	height:80px;
+	background:  #B51845;
+}
+
+ol.students-list {
+	font-size: 1.0em;
+	list-style-image: none;
+	list-style-position: outside;
+	list-style-type: none;
+}
+
+ol.students-list li:first-child {
+	border-top: 1px solid #EEEEEE;
+}
+
+ol.students-list li {
+	font-size: 0.4em;
+	border-bottom: 1px solid #EEEEEE;
+	line-height: 1.1em;
+	padding: 0.7em 0 0.6em;
+	position: relative;
+}
+
+.ApprovalText {
+	font-family: 'Lucida Grande', sans-serif;
+	font-size: 0.4em;
+	font-size-adjust: none;
+	font-stretch: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 1.5;
+	text-align: left;
+	position: relative;
+	left: 80px;
+	top: 10px;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.ui-field-contain {
+	font-size: 0.4em;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.ui-field-contain2 {
+	font-size: 0.7em;
+	position: relative;
+	top: 200%;
+	transform: translateY(-10%);
+}
+
+.modifyProgrammeTextBoxes {
+		font-size: 0.4em;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+/* STYLING FOR ------> Modify Web Pages <------
+***********************************************/
+
+
+.modifyFontSize {
+	font-size: 0.4em;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.modifyDropdown{
+	display: block;
+	list-style-type: disc;
+	width: 80%;
+	margin-top: 0.2em;
+	margin-bottom: 1 em;
+	margin-left: 280;
+	margin-right: 0;
+	padding-right: 100px;
+	position: relative;
+	left: 40px;
+	bottom: 30px;
+}
+
+.modifyDropdown2{
+	display: block;
+	list-style-type: disc;
+	width: 78%;
+	margin-top: 0.2em;
+	margin-bottom: 1 em;
+	margin-left: 20%;
+	margin-right: 0;
+	padding-right: 100px;
+	position: relative;
+	left: 20px;
+	bottom: 70px;
+}
+
+.modifyDropdown3{
+	display: block;
+	list-style-type: disc;
+	width: 78%;
+	margin-top: 0.2em;
+	margin-bottom: 1 em;
+	margin-left: 20%;
+	margin-right: 0;
+	padding-right: 100px;
+	position: relative;
+	left: 20px;
+	bottom: 120px;
+}
+
+.saveTextButton{
+	display: block;
+	list-style-type: disc;
+	width: 78%;
+	margin-top: 0.2em;
+	margin-bottom: 1 em;
+	margin-left: 20%;
+	margin-right: 0;
+	padding-right: 100px;
+	position: relative;
+	left: 18px;
+	bottom: 20px;
+}
+
+
+.modifyPositioning{
+	display: block;
+	list-style-type: disc;
+	text-align: center;
+	margin-top: 0.2em;
+	margin-bottom: 1 em;
+	margin-right: 0;
+	padding-right: 100px;
+	position: relative;
+	right:180px;
+	bottom: 10px;
+	top:110px;
+}
+
+.modifyText {
+	font-family: 'Lucida Grande', sans-serif;
+	font-size: 0.4em;
+	font-size-adjust: none;
+	font-stretch: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 1.5;
+	margin-right: 80%;
+	
+}
+
+.addModuleText {
+	font-family: 'Lucida Grande', sans-serif;
+	font-size: 0.4em;
+	font-size-adjust: none;
+	font-stretch: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 1.5;
+	margin-right: 80%;
+	position: relative;
+	bottom: 10px;
+	
+}
+
+.addModuleText2 {
+	font-family: 'Lucida Grande', sans-serif;
+	font-size: 0.4em;
+	font-size-adjust: none;
+	font-stretch: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 1.5;
+	margin-right: 80%;
+	position: relative;
+	bottom: 60px;
+	
+}
+
+
+.studentDropdown {
+	padding-right: 200px;
+	padding-top: 100px;
+}
+
+.lecturerDropdown {
+	padding-right: 10px;
+	padding-top: 50px;
+	width:970px;
+	padding-left: 60px;
+}
+
+
+
+/* END OF Modify Programme & Deferral Elements */
+
+
+
+
+/* STYLING FOR ------> Create Deferral Web Pages <------ 
+***********************************************/
+
+ 
+.addModuleDeferralPositioning{
+	display: block;
+	list-style-type: disc;
+	width: 70%;
+	position: relative;
+	bottom: 10px;
+	top:60px;
+	left:40px;
+}
+
+.addModuleDeferralText{
+	font-size: 0.4em;
+	position: relative;
+	margin-left: 100;
+	left: 11%;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.addModuleDeferralText2{
+	font-size: 0.4em;
+	width: 76%;
+	position: relative;
+	margin-left: 100;
+	left: 19%;;
+	bottom:20px;
+	
+}
+
+.dropdown {
+	display: block;
+	list-style-type: disc;
+	width: 800px;
+	margin-top: 2em;
+	margin-bottom: 1 em;
+	margin-left: 250;
+	margin-right: 0;
+	padding-right: 100px;
+	position: relative;
+	left: 30px;
+	bottom: 125px;
+}
+
+.dropdown2 {
+	display: block;
+	list-style-type: disc;
+	width: 75%;
+	margin-top: 0.2em;
+	margin-bottom: 1 em;
+	margin-left: 100;
+	margin-right: 0;
+	padding-right: 100px;
+	position: relative;
+	left: 20%;
+	bottom: 20px;
+}
+
+
+/* END OF Create Deferral Elements */
+
+
+
+div#panelImage h1, div#logo {
+	width: 500px;
+	height:150px;
+	color: transparent; 
+	background: transparent url('../images/cit-logo.png') left top no-repeat;
+	position: relative;
+	z-index: 400;
+	left: 150px;
+	bottom:50px;
+}
+div#panelImage h1 a, div#logo a {
+	width: 450px;
+	height: 180px;
+	display: block;
+	line-height: 0; 
+    font-size: 0;
+
+}
+
+.menuPosition{
+	position: relative;
+	bottom:50px;
+}
+
+
+a.headerlink:link {
+    text-decoration: none;
+}
+
+#topNavList{
+	position: relative;
+	bottom:50px;
+	font-size: 0.6em;
+	
+}
+
+.title{
+	display:block;
+	position: relative;
+	top:-130px;
+	font-size: 0.9em;
+	text-decoration: none;
+}
+
+#headerSpace{
+	visibility: hidden;
+}
+
+.books{
+	 position: relative;
+	 left:-300px;
+	bottom:30px; 
+	
+}
+
+
+.footerLogo{
+	position: relative;
+	top:3px;
+	right:450px
+}
+
+.footerText{
+	position: relative;
+	bottom:70px;
+}
+
+

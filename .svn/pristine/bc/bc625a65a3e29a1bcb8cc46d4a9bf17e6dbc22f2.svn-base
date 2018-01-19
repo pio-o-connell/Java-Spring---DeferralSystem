@@ -1,0 +1,13 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+				<!--  @author Dale Cusack -->
+
+	<form:form method="POST" action="deleteProg" modelAttribute="removeProgramme">
+	
+		<div class="ui-field-contain">
+ 			<form:label path="programmeId">ProgrammeId</form:label>
+ 			<form:input path="programmeId" placeholder="programmeId to delete" value=""/>
+ 		</div>
+ 		
+ 		<input data-theme="b" type="submit" data-icon="check" value="Delete" />
+  	</form:form> 

@@ -1,0 +1,32 @@
+package com.grouptwo.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.grouptwo.domain.Student;
+import com.grouptwo.service.StudentDAO;
+
+@Controller
+@RequestMapping("/student")
+public class StudentController {
+
+		
+		@Autowired
+		StudentDAO studentDAO;
+		
+		@RequestMapping(value="/listall", method = RequestMethod.GET) 
+		public String listAll(ModelMap model) {			
+				
+				List<Student> listStudents=studentDAO.listStudents();
+				model.addAttribute("students", listStudents);
+			    return "displayStudents";			
+			}    
+			
+	}   
+	
+

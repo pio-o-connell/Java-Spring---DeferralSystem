@@ -1,0 +1,57 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+$(function() {
+$("#modify").click(function(){ 
+	var name=$("#name").val(); 
+	var lectId=$("#lectId").val();
+	var semesterId=$("#semesterId").val();
+	var moduleId = ${modules.moduleId};
+	var crnNumber=${modules.crnNumber};
+//	var url="/module/modify/id/"+moduleId+"/crn/"+crnNumber+"/name/"+name+"/semesterId/"+semesterId+"/lectId/"+lectId;
+	var url="/module/modify/id/"+${modules.moduleId}+"/crn/"+${modules.crnNumber}+"/name/"+name;
+//	var url="/module/modify/id/"+moduleId+"/crn/"+crnNumber;
+	location.href="<%= request.getContextPath() %>"+url;
+	});
+});
+</script>
+</head>
+<body>
+<form:form modelAttribute="modules">
+
+  
+ <div class="ui-field-contain">
+ 	<form:label path="moduleId">module Id</form:label>
+	 <form:input path="moduleId" value="${modules.moduleId}" disabled="true"/>
+ </div>
+
+ 
+ <div class="ui-field-contain">
+ <form:label path="crnNumber">crn Number</form:label>
+ <form:input path="crnNumber" value="${modules.crnNumber}"  disabled="true"/>
+ </div>
+ 
+ <div class="ui-field-contain">
+ <form:label path="name">module Name</form:label>
+ <form:input path="name" id="name" value="${modules.name}" />
+ </div>
+ 
+ <div class="ui-field-contain">
+ <form:label path="lectId">Lecturer ID</form:label>
+ <form:input path="lectId" id="lectId" value="${modules.lectId}"/>
+ </div>
+ 
+ <div class="ui-field-contain">
+ <form:label path="semesterId">Semester Id:</form:label>
+ <form:input path="semesterId" id="semesterId" value="${modules.semesterId}"/>
+ </div>
+ 
+ 
+ <input type="button" class="ui-btn" data-theme="b" data-icon="check"
+			value="Modify" id="modify" />
+  </form:form>  
+  </body>
+  </html>

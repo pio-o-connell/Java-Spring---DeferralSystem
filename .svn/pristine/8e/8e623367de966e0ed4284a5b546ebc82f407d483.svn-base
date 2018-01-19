@@ -1,0 +1,72 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+
+
+	<c:if test="${not empty lecturers}">
+	<div class = "message">
+	<h4>${message}</h4>
+	</div>
+	
+	<table  data-role="table" class="ui-responsive" data-mode="columntoggle" id="lecturerTable">
+		<thead>
+			<tr>
+				<th data-priority="2">Lecturer Id</th>
+				<th> First Name</th>
+				<th> Last Name</th>
+				<th data-priority="3">Email</th>
+				<!-- <th data-priority="5">Delete</th> -->
+				<th data-priority="6">Modify</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+		
+		<c:forEach var="lecturer" items="${lecturers}" varStatus="status">
+			<tr>
+				<td><a href="<%= request.getContextPath() %>/lecturer/display/id/${status.current.lectId}"
+						class="ui-btn ui-corner-all">${status.current.lectId}</a></td>
+				<td><h3>${lecturer.firstName}</h3></td>
+				<td><h3>${lecturer.lastName}</h3></td>
+				<td><h3>${lecturer.email}</h3></td>
+				<%-- <td><a href="<%= request.getContextPath() %>/lecturer/delete/id/${status.current.lectId}"
+						class="ui-btn ui-corner-all">Delete</a></td> --%>
+				<td><a href="<%= request.getContextPath() %>/lecturer/modify/id/${status.current.lectId}"
+						class="ui-btn ui-corner-all">Modify</a></td>
+			</tr>
+		</c:forEach>			
+		</tbody>
+	</table>
+	</c:if>
+	
+	<c:if test="${empty lecturers}">
+		<div class="notification warning">
+		No lecturers.
+	</div>
+	</c:if>
+
+
+
+
+
+
+
+
+<%-- <%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+	<c:if test="${not empty lecturers}">
+		<ol class="lecturers-list">
+			<c:forEach var="lecturer" items="${lecturers}">
+				<li>
+				<span class="songwriterImage"> 
+				<img alt="songwriter" width="48" border="0" align="middle" src="<c:url value="/resources/images/songwriter1.jpg"/>">	
+				</span>
+				<span class="lecturerText"> 
+				<c:out	value="${lecturer.firstName}" />
+				<c:out value="${lecturer.lastName}" /><br />
+				<small><fmt:formatDate value="${now}" pattern="hh:mma MMM d, yyyy" /></small>
+				</span>
+				</li>
+
+			</c:forEach>
+		</ol>
+	</c:if> --%>

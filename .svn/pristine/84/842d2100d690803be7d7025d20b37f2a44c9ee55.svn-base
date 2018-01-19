@@ -1,0 +1,33 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+ 
+<html>  
+<head>
+<title><tiles:insertAttribute name="title" ignore="true"></tiles:insertAttribute></title>
+<link href="<c:url value="/resources/css/Group2.css" />" rel="stylesheet"> 
+</head>
+
+<body>
+<table>
+    <tr>
+        <td id="header" colspan="2" align="center">
+            <tiles:insertAttribute name="header"></tiles:insertAttribute>
+        </td>
+    </tr>
+    <tr>
+        
+        <td id="body">
+            <tiles:insertAttribute name="body"></tiles:insertAttribute>
+        </td>
+         <td id="login">
+            <tiles:insertAttribute name="login"></tiles:insertAttribute>
+        </td>
+    </tr>
+    <tr>
+        <td id = "footer" colspan="2" align="center">
+            <tiles:insertAttribute name="footer"></tiles:insertAttribute>
+        </td>
+    </tr>
+</table>
+</body>  
+</html>

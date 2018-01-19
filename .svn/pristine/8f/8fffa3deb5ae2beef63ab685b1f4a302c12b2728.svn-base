@@ -1,0 +1,63 @@
+package com.grouptwo.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.grouptwo.domain.Student;
+import com.grouptwo.repository.StudentDAO;
+
+@Service
+public interface StudentService {
+	
+	/**
+	 * This is the method to be used to connect up with the StudentDAO
+	 */
+	public void setStudentDAO(StudentDAO studentDAO);
+
+	/**
+	 * This is the method to be used to create a record in the Student table.
+	 */
+
+	public void createStudent(String studId, String firstName, String lastName,
+			String email);
+
+	/**
+	 * This is the method to be used to update a student record.
+	 */
+	public void updateStudent(String id, String firstname, String lastname,
+			String email);
+	
+	/**
+	 * This is the method to be used to update a student record, last name only
+	 */
+	public void updateStudent(String id, String lastname);
+
+	/**
+	 * This is the method to be used to delete a record from the Student table
+	 * corresponding to a passed Student ID.
+	 */
+	public void deleteStudent(String studId);
+
+	/**
+	 * This is the method to be used to create multiple students.
+	 */
+	public void createMultipleStudents(final List<Student> students);
+
+	/**
+	 * This is the method to be used to delete multiple students.
+	 */
+	public void deleteMultipleStudents(final List<Student> students);
+
+	/**
+	 * This is the method to be used to get a Student.
+	 */
+	public Student getStudent(String id);
+
+	/**
+	 * This is the method to be used to list down all the records from the
+	 * Student table.
+	 */
+	public List<Student> listStudents();
+	
+}

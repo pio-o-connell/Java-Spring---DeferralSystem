@@ -1,0 +1,242 @@
+@CHARSET "ISO-8859-1";
+
+body {
+	/* background: #FFFFFF url(../images/thehitpic1.jpg) no-repeat
+		fixed left top; */
+	color: #000000;
+	font-family: 'Lucida Grande', sans-serif;
+	font-size: 3em;
+	font-size-adjust: none;
+	font-stretch: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 1.5;
+	text-align: center;
+}
+
+#messageTest {
+	height: 400px;
+	width: 800px;
+	padding: 5px;
+}
+
+.studentText {
+	display: block;
+	width: 500px;
+	margin-left: 56px;
+	min-height: 50px;
+}
+
+.ui-page .ui-header {
+	background: #7E1414;
+}
+
+.ui-page .ui-footer {
+	background: #7E1414;
+}
+
+ol.students-list {
+	font-size: 1.0em;
+	list-style-image: none;
+	list-style-position: outside;
+	list-style-type: none;
+}
+
+ol.students-list li:first-child {
+	border-top: 1px solid #EEEEEE;
+}
+
+ol.students-list li {
+	font-size: 0.4em;
+	border-bottom: 1px solid #EEEEEE;
+	line-height: 1.1em;
+	padding: 0.7em 0 0.6em;
+	position: relative;
+}
+
+.ApprovalText {
+	font-family: 'Lucida Grande', sans-serif;
+	font-size: 0.4em;
+	font-size-adjust: none;
+	font-stretch: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 1.5;
+	text-align: left;
+	position: relative;
+	left: 80px;
+	top: 10px;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.ui-field-contain {
+	font-size: 0.4em;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.ui-field-contain2 {
+	font-size: 0.7em;
+	position: relative;
+	top: 200%;
+	transform: translateY(-10%);
+}
+
+.modifyProgrammeTextBoxes {
+		font-size: 0.4em;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+
+/* STYLING FOR ------> Modify Web Pages <------
+ * Note : Julia the positioning for the deferral & programme modifying pages rely heavily
+ *        on these elements. Thanks, Niall
+ */
+
+.modifyFontSize {
+	font-size: 0.4em;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.modifyDropdown{
+	display: block;
+	list-style-type: disc;
+	width: 800px;
+	margin-top: 0.2em;
+	margin-bottom: 1 em;
+	margin-left: 280;
+	margin-right: 0;
+	padding-right: 100px;
+	position: relative;
+	left: 40px;
+	bottom: 30px;
+}
+
+.modifyDropdown2{
+	display: block;
+	list-style-type: disc;
+	width: 780px;
+	margin-top: 0.2em;
+	margin-bottom: 1 em;
+	margin-left: 200;
+	margin-right: 0;
+	padding-right: 100px;
+	position: relative;
+	left: 20px;
+	bottom: 70px;
+}
+
+.modifyPositioning{
+	display: block;
+	list-style-type: disc;
+	text-align: center;
+	width: 1000px;
+	margin-top: 0.2em;
+	margin-bottom: 1 em;
+	margin-right: 0;
+	padding-right: 100px;
+	position: relative;
+	right:180px;
+	bottom: 10px;
+	top:110px;
+}
+
+.modifyText {
+	font-family: 'Lucida Grande', sans-serif;
+	font-size: 0.4em;
+	font-size-adjust: none;
+	font-stretch: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 1.5;
+	text-align: left;
+	position: relative;
+	left: 50px;
+	top: 10px;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+/* END OF Modify Programme & Deferral Elements */
+
+
+
+/* STYLING FOR ------> Create Deferral Web Pages <------ 
+ * Note : Julia the positioning for the create deferral pages rely heavily
+ *        on these elements. Thanks, Niall
+ */
+ 
+.addModuleDeferralPositioning{
+	display: block;
+	list-style-type: disc;
+	text-align: center;
+	width: 1000px;
+	margin-top: 0.2em;
+	margin-bottom: 1 em;
+	margin-right: 0;
+	padding-right: 100px;
+	position: relative;
+	right:10px;
+	bottom: 10px;
+	top:60px;
+}
+
+.addModuleDeferralText{
+	font-size: 0.4em;
+	position: relative;
+	left:200px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.addModuleDeferralText2{
+	font-size: 0.4em;
+	position: relative;
+	left:200px;
+	bottom:20px;
+	
+}
+
+.dropdown {
+	display: block;
+	list-style-type: disc;
+	width: 800px;
+	margin-top: 2em;
+	margin-bottom: 1 em;
+	margin-left: 280;
+	margin-right: 0;
+	padding-right: 100px;
+	position: relative;
+	left: 30px;
+	bottom: 125px;
+}
+
+.dropdown2 {
+	display: block;
+	list-style-type: disc;
+	width: 1000px;
+	margin-top: 0.2em;
+	margin-bottom: 1 em;
+	margin-left: 180;
+	margin-right: 0;
+	padding-right: 100px;
+	position: relative;
+	left: 30px;
+	bottom: 20px;
+}
+
+/* END OF Create Deferral Elements */
+
+
+}

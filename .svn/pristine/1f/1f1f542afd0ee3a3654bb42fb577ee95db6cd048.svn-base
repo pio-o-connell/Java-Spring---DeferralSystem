@@ -1,0 +1,47 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+<!-- @Author Salome Halpin, modified by Julia Foden -->
+
+<h4>${message}</h4>
+
+<table data-role="table" data-mode="columntoggle" class="ui-responsive" id="myTable">
+  <thead>
+    <tr>
+    <th data-priority="2">Lecturer Id</th>
+    <th>First name</th>
+    <th>Last name</th>
+    <th data-priority="3">Email</th>     
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+     <%-- <td><img src="<c:url value="/resources/images/${id}.jpg"/>" 
+             width="48" height="48" /></td> --%>
+<%--    	  <td><img alt="songwriter" width="48" border="0" align="middle" src="<c:url value="/resources/images/songwriter1.jpg"/>"></td>
+ --%> 
+ 		<td>${id}</td>
+      <td>${firstname}</td>
+      <td>${lastname}</td>
+      <td>${email}</td>          
+    </tr>
+  </tbody>
+    	</table>
+    	
+<c:if test="${not empty deferrals}">
+	<div data-role="main" class="ui-content">
+  			<a href= "<%= request.getContextPath() %>/deferral/list/coordinatorId/${id}"
+  				class="ui-btn ui-corner-all">View all deferrals</a>
+  		</div>
+  	<c:if test="${not empty unappDeferrals}">
+  		<div data-role="main" class="ui-content">
+  			<a href= "<%= request.getContextPath() %>/deferral/list/unapproved/coordinatorId/${id}"
+  				class="ui-btn ui-corner-all">View all unapproved deferrals</a>
+  		</div>
+  	</c:if>
+</c:if>
+    	
+  	<%-- <div data-role="main" class="ui-content">
+  			<a href= "<%= request.getContextPath() %>/advancedlist/lecturerId/${id}"
+  				class="ui-btn">View this lecturer's details</a>
+  		</div> --%>
+  </table>  

@@ -1,0 +1,111 @@
+package com.grouptwo.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.grouptwo.domain.Student;
+import com.grouptwo.service.StudentDAO;
+
+
+/**
+ * @author Julia Foden
+ *
+ */
+@Controller
+@RequestMapping("/student")
+public class StudentController {
+
+		
+		@Autowired
+		StudentDAO studentDAO;
+		
+		/**
+		 * @author Julia Foden
+		 * This method will list all students
+		 *
+		 */
+		@RequestMapping(value="/listall", method = RequestMethod.GET) 
+		public String listAll(ModelMap model) {			
+				
+				List<Student> listStudents=studentDAO.listStudents();
+				model.addAttribute("students", listStudents);
+			    return "displayStudents";			
+			} 
+		
+		/**
+		 * @author Julia Foden
+		 * This method will display the details of one student
+		 *
+		 */
+		@RequestMapping(value= "/display/id/{id}", method = RequestMethod.GET)
+		public String displayStudentById(@PathVariable String id, ModelMap model){
+			Student student = studentDAO.getStudent(id);
+			model.addAttribute("message", "Student "+ id + ".");
+			model.addAttribute("firstname", student.getFirstName());
+			model.addAttribute("lastname", student.getLastName());
+			model.addAttribute("email", student.getEmail());
+			return "displayStudent";
+		}
+		
+		/**
+		 * @author Julia Foden
+		 * This method will delete one student
+		 *
+		 */
+		@RequestMapping(value= "/delete/id/{id}", method = RequestMethod.GET)
+		public String deleteStudentById(@PathVariable String id, ModelMap model){
+			Student student = studentDAO.getStudent(id);
+			studentDAO.deleteStudent(id);
+			model.addAttribute("message", "Student "+ id + " has been deleted");
+			model.addAttribute("firstname", student.getFirstName());
+			model.addAttribute("lastname", student.getLastName());
+			model.addAttribute("email", student.getEmail());
+			return "displayStudent";
+		}
+			
+	}   
+	
+
+
+
+
+
+
+/*package com.grouptwo.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.grouptwo.domain.Student;
+import com.grouptwo.service.StudentDAO;
+
+@Controller
+@RequestMapping("/student")
+public class StudentController {
+
+		
+		@Autowired
+		StudentDAO studentDAO;
+		
+		@RequestMapping(value="/listall", method = RequestMethod.GET) 
+		public String listAll(ModelMap model) {			
+				
+				List<Student> listStudents=studentDAO.listStudents();
+				model.addAttribute("students", listStudents);
+			    return "displayStudents";			
+			}    
+			
+	}  */ 
+	
+

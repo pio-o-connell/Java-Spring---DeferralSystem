@@ -1,0 +1,235 @@
+
+package com.grouptwo.controllers;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.grouptwo.domain.Deferral;
+import com.grouptwo.domain.Lecturer;
+import com.grouptwo.domain.Module;
+import com.grouptwo.domain.Student;
+import com.grouptwo.service.DeferralService;
+import com.grouptwo.service.LecturerService;
+import com.grouptwo.service.ModuleService;
+import com.grouptwo.service.SemesterService;
+
+
+@Controller
+@RequestMapping("/admin/module")
+public class ModuleController {
+	@Autowired
+	ModuleService moduleService;
+	@Autowired
+	DeferralService deferralService;
+	@Autowired
+	LecturerService lecturerService;
+	@Autowired
+	SemesterService semesterService;
+	@Autowired
+	private ServletContext servletContext;
+	
+	@RequestMapping(value="/listall",method=RequestMethod.GET)
+	public String listAll(ModelMap model){
+		List<Module> listModules = moduleService.listModules();
+		model.addAttribute("modules",listModules);
+		Date date = new java.util.Date();
+		model.addAttribute("now", date);
+		model.addAttribute("message", "List of modules");
+		return "displayModules";
+	}
+	
+	/**
+	 * 
+	 * This method will display the details of modules with one id (different CRNs)
+	 * @author Julia Foden
+	 */
+	@RequestMapping(value= "/list/id/{id}", method = RequestMethod.GET)
+	public String displayModuleById(@PathVariable String id, ModelMap model){
+		List<Module> listModules = moduleService.listModulesById(id);
+		model.addAttribute("id", id);
+		model.addAttribute("modules",listModules);
+		
+		ArrayList<Deferral> deferralList = new ArrayList<Deferral>();
+		try {
+			List<Deferral> deferralDBList = deferralService.listDeferralsByModule(id);
+			for(Deferral deferral: deferralDBList){
+				deferralList.add(deferral);
+			}
+		} catch (Exception e) {
+			System.out.println("No deferrals");
+			e.printStackTrace();
+		} 
+		model.addAttribute("deferrals",deferralList);
+		return "displayModulesId";
+	}
+	
+	
+	
+	@RequestMapping(value = "/advancedlist/studentId/{studentId}", method = RequestMethod.GET)
+	public String listModulesByStudent(@PathVariable String studentId,
+			ModelMap model) {
+		Date date = new java.util.Date();
+		List<Module> listModules = moduleService.listStudentModules(studentId);
+		model.addAttribute("modules", listModules);
+		model.addAttribute("now", date);
+		return "displayModulesByStudentId";
+
+	}
+	
+	
+	
+	/**
+	 * 
+	 * This method will produce the form to add a module
+	 * @author Julia Foden
+	 */
+	@RequestMapping(value= "/addNew", method = RequestMethod.GET)
+	public String addNewModule(ModelMap model){
+		List<Lecturer> listLecturers = lecturerService.listLecturers();
+		model.addAttribute("coordinatorList",listLecturers );
+		
+		model.addAttribute("semesterList", semesterService.listSemesters());
+		model.addAttribute("newModule", new Module());
+		return "newMAdd1";
+	}
+	
+	/**
+	 * 
+	 * This method will create a module and return the list of all modules
+	 * @author Julia Foden
+	 */
+	@RequestMapping(value = "/addModule", method = RequestMethod.POST)
+	public String displayNewModule(@ModelAttribute("newModule") @Valid Module newModule, BindingResult result,ModelMap model) {
+		if (result.hasErrors()) {
+			return "newMAdd1";
+		}
+		
+		model.addAttribute("moduleId",newModule.getModuleId());
+		model.addAttribute("crnNumber",newModule.getCrnNumber());
+		model.addAttribute("name",newModule.getName());
+		model.addAttribute("lectId",newModule.getLectId());
+		model.addAttribute("semesterId",newModule.getSemesterId());
+		try {
+			moduleService.createModule(newModule.getModuleId(), newModule.getCrnNumber(), newModule.getName(), newModule.getLectId(),newModule.getSemesterId());
+			model.addAttribute("message", "Module "+ newModule.getModuleId() + " with CRN "+ newModule.getCrnNumber()+
+					" has been added");
+			List<Module> listModules = moduleService.listModules();
+			model.addAttribute("modules",listModules);
+		} catch (Exception e) {
+			model.addAttribute("message", "Creation of new module failed. ");
+			model.addAttribute("modules", moduleService.listModules());
+			e.printStackTrace();
+		}
+		
+		return "displayModules";
+	} 
+	
+	
+	
+	
+	@RequestMapping(value= "/delete/id/{moduleId}/crn/{crnNumber}", method = RequestMethod.GET)
+	public String deleteModuleByIdByCRN(@PathVariable String moduleId ,@PathVariable int crnNumber, ModelMap model)
+	{
+		moduleService.deleteModule(moduleId, crnNumber);
+		model.addAttribute("message", "Module "+ moduleId + " with CRN "+ crnNumber+
+				" has been deleted");
+		List<Module> listModules = moduleService.listModules();
+		model.addAttribute("modules",listModules);
+		return "displayModules";
+		
+		}
+	
+	/**
+	 * This method will produce a form to modify a module's name 
+	 *  @author Julia Foden
+	 */
+	@RequestMapping(value="/modify/id/{moduleId}/crn/{crnNumber}", method = RequestMethod.GET)
+	public String updateModuleName(@PathVariable String moduleId ,@PathVariable int crnNumber,ModelMap model){
+		Module moduleModify = moduleService.getModule(moduleId, crnNumber);
+		model.addAttribute("message", "The module's name can now be modified");
+		model.addAttribute("moduleId",moduleModify.getModuleId());
+		model.addAttribute("crnNumber",moduleModify.getCrnNumber());
+		model.addAttribute("name",moduleModify.getName());
+		model.addAttribute("lectId",moduleModify.getLectId());
+		model.addAttribute("semesterId",moduleModify.getSemesterId());
+		model.addAttribute("module", new Module());
+		return "modifyModule";
+	}
+	
+	/**
+	 * This method will modify a module's name and return a confirmation message and a list of all modules
+	 *  @author Julia Foden
+	 */
+	@RequestMapping(value="/modify/id/{moduleId}/crn/{crnNumber}/name/{name}", method = RequestMethod.GET)
+	public String updateModuleResult(@PathVariable String moduleId,@PathVariable int crnNumber, @PathVariable String name, ModelMap model){
+		try {
+			moduleService.updateModuleName(moduleId, crnNumber, name);
+			model.addAttribute("message", "Module "+ moduleId+ " has been modified");
+		} catch (Exception e) {
+			model.addAttribute("message", "Modification of module "+ moduleId+ " has failed");
+			e.printStackTrace();
+		}
+		List<Module> listModules = moduleService.listModules();
+		model.addAttribute("modules",listModules);
+		return "displayModules";
+	}
+
+
+	
+	/**
+	 * This method will produce a dropdown menu to search for a module by id 
+	 * @author Julia Foden
+	 *
+	 */
+	@RequestMapping(value= "/advancedlist", method = RequestMethod.GET)
+	public String moduleSearchById(ModelMap model){
+		List<Module> moduleIdList = moduleService.listModules();
+		model.addAttribute("moduleIdList", moduleIdList);
+		model.addAttribute("module", new Module());
+		return "moduleSearch";
+	}
+	
+	/**
+	 * This method will display the module's details when searched for by Id
+	 * @author Julia Foden
+	 *
+	 */
+	@RequestMapping(value="/moduleSearchResult",method=RequestMethod.POST)
+	public String displayModuleSeachById(@ModelAttribute("module")Module module, ModelMap model){
+		String id = module.getModuleId();
+		model.addAttribute("message", "Module "+ id);
+		List<Module> listModules = moduleService.listModulesById(id);
+		model.addAttribute("id", id);
+		model.addAttribute("modules",listModules);
+		
+		ArrayList<Deferral> deferralList = new ArrayList<Deferral>();
+		try {
+			List<Deferral> deferralDBList = deferralService.listDeferralsByModule(id);
+			for(Deferral deferral: deferralDBList){
+				deferralList.add(deferral);
+			}
+		} catch (Exception e) {
+			System.out.println("No deferrals");
+			e.printStackTrace();
+		} 
+		model.addAttribute("deferrals",deferralList);
+		return "displayModulesId";
+		
+	}
+}	
+	
+	

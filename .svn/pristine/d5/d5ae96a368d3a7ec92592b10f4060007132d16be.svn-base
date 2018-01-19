@@ -1,0 +1,54 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+<c:if test="${not empty modules}">
+<table data-role="table" class="ui-responsive" data-mode="columntoggle" id="myTable">
+  <thead>
+    <tr>
+    <th data-priority="1">Module ID </th>
+    <th data-priority="3">CRN Number</th>
+    <th >Module Name</th>
+    <th data-priority="2">Lecturer ID</th>
+    <th data-priority="4">Semester ID</th>    
+    <th data-priority="5">Delete</th>
+    <th data-priority="6">Modify</th>
+    </tr>
+  </thead>
+
+  <tbody>
+      <c:forEach var="module" items="${modules}">
+    <tr>
+    <%--
+   	  <td><img alt="deferral" width="24" border="0" align="middle" src="<c:url value="/resources/images/songwriter1.jpg"/>"></td>
+   	  --%>
+      <td>${module.moduleId}</td>
+      <td>${module.crnNumber}</td>
+      <td>${module.name}</td>
+      <td>${module.lectId}</td>  
+      <td>${module.semesterId}</td>   
+     
+     <%--  <td><a href="<%= request.getContextPath() %>/songwriter/downloadImage/${songwriter.id}"
+						class="ui-btn">Download Image</a></td> 
+               --%>
+              
+      <td><a href="<%= request.getContextPath() %>/module/delete/id/${module.moduleId}/crn/${module.crnNumber}"
+						class="ui-btn ui-corner-all">Delete</a></td>
+	  <td><a href="<%= request.getContextPath() %>/module/modify/id/${module.moduleId}/crn/${module.crnNumber}"
+						class="ui-btn ui-corner-all">Modify</a></td> 
+		
+               
+    </tr>
+     </c:forEach>
+  </tbody>
+ 
+</table>
+<br>
+<br>
+<small><fmt:formatDate value="${now}" pattern="hh:mma MMM d, yyyy" /></small>		
+		
+	</c:if>
+	
+	<c:if test="${empty modules}">
+	<div class="notification warning">
+		No modules.
+	</div>
+	</c:if> 

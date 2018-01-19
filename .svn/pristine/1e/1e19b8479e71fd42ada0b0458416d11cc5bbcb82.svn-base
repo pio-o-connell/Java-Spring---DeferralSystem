@@ -1,0 +1,115 @@
+package com.grouptwo.service;
+
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.springframework.stereotype.Service;
+
+import com.grouptwo.domain.Deferral;
+
+@Service
+public interface DeferralDAO {
+	/**
+	 * This is the method to be used to initialize database resources ie.
+	 * connection.
+	 */
+	public void setDataSource(DataSource ds);
+
+	/**
+	 * This is the method to be used to create a Deferral entry and return the
+	 * id generated.
+	 */
+	public int createDeferralGetId(String studentID, String lectID,
+			String progID, String moduleID);
+
+	/**
+	 * This is the method to be used to create a Module Deferral.
+	 */
+	public void createModuleDeferral(String studentId, String moduleId,
+			int crnNumber);
+
+	/**
+	 * This is the method to be used to create a Programme Deferral .
+	 */
+	public void createProgrammeDeferral(String studentId, String programmeId);
+
+	/**
+	 * This is the method to be used to delete a Deferral entry.
+	 */
+	public void deleteDeferralById(int id);
+
+	/**
+	 * This is the method to be used to delete a Deferral based on a student ID.
+	 */
+	void deleteDeferralsByStudentID(String studentId);
+
+	/**
+	 * This is the method to be used to delete a Deferral based on a module ID.
+	 */
+	void deleteDeferralsByModuleID(String moduleId);
+
+	/**
+	 * This is the method to be retrieve a Deferral based on the ID.
+	 */
+	public Deferral getDeferral(int id);
+
+	/**
+	 * This is the method to be used to list down all the records from the
+	 * deferral table.
+	 */
+	public List<Deferral> listDeferrals();
+
+	/**
+	 * This is the method to be used to list all deferrals of a particular
+	 * student.
+	 */
+	public List<Deferral> listDeferralsByStudent(String studentID);
+
+	/**
+	 * This is the method to be used to list all deferrals of a particular
+	 * programme.
+	 */
+	public List<Deferral> listDeferralsByProgramme(String programmeID);
+
+	/**
+	 * This is the method to be used to list all unapproved deferrals.
+	 */
+	public List<Deferral> listUnapprovedDeferrals(String unapproved);
+
+	/**
+	 * This is the method to be used to list all unapproved deferrals of a
+	 * particular programme.
+	 */
+	public List<Deferral> listUnapprovedDeferralsByProgramme(String unapproved,
+			String programmeID);
+
+	/**
+	 * This is the method to be used to list all unapproved deferrals by
+	 * coodinator.
+	 */
+	public List<Deferral> listUnapprovedDeferralsByProgrammeCoordinatorName(
+			String unapproved, String firstname);
+
+	/**
+	 * This is the method to be used to list all unapproved deferrals of a
+	 * particular programme.
+	 */
+	public List<Deferral> listApprovedDeferralsByStudent(String approved,
+			String studentID);
+
+	/**
+	 * This is the method used to approve a module deferral.
+	 */
+	public void approveModuleDeferral(String studId, String moduleId);
+
+	/**
+	 * This is the method used to approve a programme deferral.
+	 */
+	public void approveProgrammeDeferral(String studId, String programmeId);
+
+	/**
+	 * This is the method used to count the rows in the table.
+	 */
+	public int countRows();
+}

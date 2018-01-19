@@ -1,0 +1,158 @@
+package com.grouptwo.mvc;
+
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
+import org.junit.*;
+import org.junit.runner.RunWith;
+
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.grouptwo.domain.Module;
+import com.grouptwo.domain.Programme;
+import com.grouptwo.repository.ModuleJdbcDaoSupport;
+import com.grouptwo.repository.ProgrammeJdbcDaoSupport;
+import com.grouptwo.repository.RegistrationJdbcDaoSupport;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({ "classpath:configuration.xml" })
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+		DbUnitTestExecutionListener.class })
+
+
+public class ModuleTest {
+	@Autowired
+	ApplicationContext autoWireContext;
+	ModuleJdbcDaoSupport moduleJdbcDaoSupport;
+	RegistrationJdbcDaoSupport registrationJdbcDaoSupport;
+
+	private WebDriver driver;
+	private String baseUrl;
+	private StringBuffer verificationErrors = new StringBuffer();
+
+	  @Before
+	  public void setUp() throws Exception {
+	    driver = new FirefoxDriver();
+	    driver.manage().window().maximize();
+	    baseUrl = "http://localhost:8080/";
+	    driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+	  }
+
+	  @Test
+	  @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	  public void testCreateNewModule() throws Exception {
+	    driver.get(baseUrl + "/SpringWebProject/home");
+	    driver.findElement(By.linkText("Menu Options")).click();
+	    driver.findElement(By.partialLinkText("Add New")).click();
+	    driver.findElement(By.linkText("Module")).click();
+	    driver.findElement(By.id("moduleId")).clear();
+	    driver.findElement(By.id("moduleId")).sendKeys("COMP8080");
+	    driver.findElement(By.id("crnNumber")).clear();
+	    driver.findElement(By.id("crnNumber")).sendKeys("22222");
+	    driver.findElement(By.id("name")).clear();
+	    driver.findElement(By.id("name")).sendKeys("Java");
+	    new Select(driver.findElement(By.id("lectId"))).selectByVisibleText("L002");
+	    new Select(driver.findElement(By.id("semesterId"))).selectByVisibleText("KCLDC_Y4_S1");
+	    driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
+	    
+	    //instructing Selenium to wait for following page to load by searching for element on next page
+	    WebDriverWait wait = new WebDriverWait(driver, 40);
+	    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.id("myTable")));
+	    
+	    	//Expected String Values
+	  		String expectedModuleName= "Java";
+	  		String expectedModuleSemester= "KCLDC_Y4_S1";
+	  		String expectedModuleLecturer="L002";
+	    
+	  		//Actual String Values
+	  		moduleJdbcDaoSupport = (ModuleJdbcDaoSupport) autoWireContext.getBean("moduleJdbcDaoSupport");
+	  		Module actualModule= moduleJdbcDaoSupport.getModule("COMP8080", 22222);
+	  		String actualModuleName= actualModule.getName();
+	  		String actualModuleSemester= actualModule.getSemesterId();
+	  		String actualModuleLecturer= actualModule.getLectId();
+	  		
+	  		//Compare Expected vs Actual
+	  		assertEquals(expectedModuleName, actualModuleName);
+	  		assertEquals(expectedModuleSemester, actualModuleSemester);
+	  		assertEquals(expectedModuleLecturer, actualModuleLecturer);
+	  }
+	  
+	  @Test
+	  @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	  public void testModifyModule() throws Exception {
+	    driver.get(baseUrl + "/SpringWebProject/home");
+	    driver.findElement(By.linkText("Menu Options")).click();
+	    driver.findElement(By.partialLinkText("List All")).click();
+	    driver.findElement(By.linkText("Modules")).click();
+	    driver.findElement(By.linkText("Modify")).click();
+	    driver.findElement(By.id("name")).clear();
+	    driver.findElement(By.id("name")).sendKeys("Advanced Business Intelligence");
+	    driver.findElement(By.id("modify")).click();
+	    
+	    //Expected String Values
+  		String expectedModuleName= "Advanced Business Intelligence";
+  		String expectedModuleSemester= "KCLDC_Y4_S1";
+  		String expectedModuleLecturer="L002";
+    
+  		//Actual String Values
+  		moduleJdbcDaoSupport = (ModuleJdbcDaoSupport) autoWireContext.getBean("moduleJdbcDaoSupport");
+  		Module actualModule= moduleJdbcDaoSupport.getModule("COMP8016", 22780);
+  		String actualModuleName= actualModule.getName();
+  		String actualModuleSemester= actualModule.getSemesterId();
+  		String actualModuleLecturer= actualModule.getLectId();
+  		
+  		//Compare Expected vs Actual
+  		assertEquals(expectedModuleName, actualModuleName);
+  		assertEquals(expectedModuleSemester, actualModuleSemester);
+  		assertEquals(expectedModuleLecturer, actualModuleLecturer);
+	  }
+	  
+	  @Test
+	  @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
+	  public void testDeleteModule() throws Exception {
+	    driver.get(baseUrl + "/SpringWebProject/home");
+	    driver.findElement(By.linkText("Menu Options")).click();
+	    driver.findElement(By.partialLinkText("List All")).click();
+	    driver.findElement(By.linkText("Modules")).click();
+	    driver.findElement(By.linkText("Delete")).click();
+	    
+	    //page loading not quick enough for execution,to slow down execution so changes come into effect 
+	    try {
+  			WebDriverWait wait1 = new WebDriverWait(driver,5);
+  			WebElement elementa = wait1.until(ExpectedConditions.visibilityOfElementLocated(By.id("myTable")));
+  		}catch (Exception e) {
+  			//e.printStackTrace();
+  		}
+	    
+	    moduleJdbcDaoSupport = (ModuleJdbcDaoSupport) autoWireContext.getBean("moduleJdbcDaoSupport");
+		List<Module> modules=moduleJdbcDaoSupport.listModules();
+		
+		assertEquals(3, modules.size());
+	    
+	  }
+
+	  @After
+	  public void tearDown() throws Exception {
+	    driver.quit();
+	    String verificationErrorString = verificationErrors.toString();
+	    if (!"".equals(verificationErrorString)) {
+	      fail(verificationErrorString);
+	    }
+	  }
+}

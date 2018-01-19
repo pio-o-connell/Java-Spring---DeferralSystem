@@ -1,0 +1,30 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+
+
+				<!--  @author Dale Cusack -->
+
+	<form:form method="POST" action="displayAProg" modelAttribute="aProgramme">
+	
+		<%-- <div class="ui-field-contain">
+ 			<form:label path="programmeId">Programmes Id</form:label>
+ 			<form:input path="programmeId" placeholder="programme Id to search" value=""/>
+ 		</div> --%>
+ 		
+ 		<div class="lecturerDropdown">
+ 		<div class="studentDropdown">
+		<form:select path="programmeId" id="studentId">
+			<form:option value="programmeId">Choose Programme ID</form:option>
+			<c:forEach var="programme" items="${programmes}">
+				<form:option value="${programme.programmeId}"></form:option>
+			</c:forEach>
+			<form:errors path="programmeId" cssClass="error"
+			class="notification error" style="display:block"></form:errors>
+		</form:select>
+		</div>
+		</div>
+ 		
+ 		<input data-theme="a" type="submit" data-icon="search" value="Search" />
+  	</form:form> 
+  	
+  	

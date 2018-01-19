@@ -1,0 +1,13 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+				<!--  @author Dale Cusack -->
+
+	<form:form method="POST" action="studentsProg" modelAttribute="progOfStudent">
+	
+		<div class="ui-field-contain">
+ 			<form:label path="studentId">Students Id</form:label>
+ 			<form:input path="studentId" placeholder="studentId to search" value=""/>
+ 		</div>
+ 		
+ 		<input data-theme="b" type="submit" data-icon="check" value="Search" />
+  	</form:form> 

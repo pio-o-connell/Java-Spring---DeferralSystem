@@ -1,0 +1,72 @@
+<%@ include file="/WEB-INF/jsp/include.jsp"%>
+
+			<!--  @author Dale Cusack -->
+
+<head>
+	<style>
+		.error {
+			color: #ff0000;
+		}
+
+		
+	</style>
+</head>
+
+	<!-- Form for user to add in attributes to create a new Programme
+	When Save button pressed data stored in model attribute newProgramme
+	/programme/addProg url generated -->
+	<form:form method="POST" action="addProg" modelAttribute="newProgramme">
+	
+	
+		<div class="ui-field-contain">
+ 			<form:label path="programmeId">ProgrammeId</form:label>
+ 			<form:input path="programmeId" placeholder="programmeId" value=""/>
+ 			<form:errors path="programmeId" cssClass="error" class="notification error" style="display:block"></form:errors>
+ 			
+ 		</div>
+ 		<div class="ui-field-contain">
+ 			<form:label path="numYears">Number Of Years</form:label>
+ 			<form:input path="numYears" placeholder="numYears" value=""/>
+ 			<form:errors path="numYears" cssClass="error" class="notification error" style="display:block"></form:errors>
+ 			
+ 		</div>
+ 		<div class="ui-field-contain">
+ 			<form:label path="coordinatorId">Coordinator</form:label>
+ 			<form:input path="coordinatorId" placeholder="Coordinator id" value=""/>
+ 			<form:errors path="coordinatorId" cssClass="error" class="notification error" style="display:block"></form:errors>
+ 		</div>
+ 		<div class="ui-field-contain">
+ 			<form:label path="progYear">Programme Year</form:label>
+ 			<form:input path="progYear" placeholder="progYear" value=""/>
+ 			<form:errors path="progYear" cssClass="error" class="notification error" style="display:block"></form:errors>
+ 		</div>
+ 		
+ 		<input data-theme="b" type="submit" data-icon="check" value="Save" />
+  	</form:form> 
+
+	<%-- <form:form method="POST" action="addNew" modelAttribute="newProgramme">
+		<table> 
+			<tr> 
+				<td colspan="2">Add a new Programme.</td> 
+			</tr> 
+			<tr> 
+				<td><form:label path="programmeId">ProgrammeId</form:label></td> 
+				<td><form:input path="programmeId" /></td> 
+			</tr> 
+			<tr> 
+				<td><form:label path="numYears">Number Of Years</form:label></td> 
+				<td><form:input path="numYears" /></td> 
+			</tr> 
+			<tr> 
+				<td><form:label path="coordinatorId">Coordinator</form:label></td> 
+				<td><form:input path="coordinatorId" /></td> 
+			</tr> 
+			<tr> 
+				<td><form:label path="progYear">Programme Year</form:label></td> 
+				<td><form:input path="progYear" /></td> 
+			</tr>
+			<tr> 
+				<td colspan="2"><input type="submit" value="Add new Programme" /></td> 
+			</tr> 
+		</table> 
+	</form:form> --%> 
