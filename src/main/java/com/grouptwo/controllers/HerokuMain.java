@@ -5,6 +5,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.CodeSource;
 
+import javax.servlet.ServletException;
+
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
@@ -21,7 +23,7 @@ public class HerokuMain {
         return Integer.parseInt(port);
     }
     
-    public static void main(String[] args) throws LifecycleException, URISyntaxException {
+    public static void main(String[] args) throws LifecycleException, URISyntaxException, ServletException {
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(getPort());
         tomcat.getConnector();
