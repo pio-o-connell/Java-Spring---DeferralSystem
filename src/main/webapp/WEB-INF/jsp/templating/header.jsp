@@ -20,7 +20,7 @@
 
 	<div>
 
-<img class= "books" src="http://studystrategies.yaia.com/studyindex.gif" style="width:204px;height:120px">
+<img class= "books" src="https://studystrategies.yaia.com/studyindex.gif" style="width:204px;height:120px">
 <a href="/SpringWebProject/home" class="title"><font color="white">CIT Deferral System</font></a>    
 
 </div> 
