@@ -22,10 +22,7 @@ import com.grouptwo.service.ModuleService;
 import com.grouptwo.service.ProgrammeService;
 
 
-/**
- * @author Salome Halpin
- *
- */
+
 
 @Controller
 @RequestMapping("/admin/lecturer")
@@ -44,11 +41,7 @@ public class LecturerController {
 		@Autowired
 		DeferralService deferralService;
 		
-		/**
-		 * 
-		 * This method will list all lecturers
-		 * @author Salome Halpin
-		 */
+		
 		@RequestMapping(value="/listall", method = RequestMethod.GET) 
 		public String listAll(ModelMap model) {			
 				
@@ -58,11 +51,7 @@ public class LecturerController {
 			    return "displayLecturers";			
 			} 
 		
-		/**
-		 * 
-		 * This method will display the details of one lecturer
-		 * @author Salome
-		 */
+		
 		@RequestMapping(value= "/display/id/{id}", method = RequestMethod.GET)
 		public String displayLecturerById(@PathVariable String id, ModelMap model){
 			//get lecturer by id and get their details
@@ -122,11 +111,7 @@ public class LecturerController {
 			return "displayLecturer";
 		}
 		
-		/**
-		 *
-		 * This method will delete one lecturer
-		 *  @author Salome Halpin
-		 */
+		
 		@RequestMapping(value= "/delete/id/{id}", method = RequestMethod.GET)
 		public String deleteLecturerById(@PathVariable String id, ModelMap model){
 			lecturerService.deleteLecturer(id);
@@ -154,10 +139,7 @@ public class LecturerController {
 			return "modifyLecForm";
 		}
 		
-		/**
-		 * This method will modify the lecturer's last name and then display the lecturer's details  
-		 * @author Julia Foden
-		 */		
+		
 		@RequestMapping(value="/modify/id/{lectId}/lastname/{lastName}", method = RequestMethod.GET)
 		public String displayModifiedLecturer(@PathVariable String lectId, @PathVariable String lastName, ModelMap model){
 			try {
@@ -173,22 +155,14 @@ public class LecturerController {
 		}
 		
 	
-		/**
-		 * 
-		 * This method will produce the form to add a lecturer
-		 * @author Salome Halpin
-		 */
+		
 		@RequestMapping(value= "/addNew", method = RequestMethod.GET)
 		public String addNewLecturer(ModelMap model){
 			model.addAttribute("lecturer", new Lecturer());
 			return "newLecturer";
 		}
 		
-		/**
-		 * This method will add a new lecturer to the database
-		 * @author Salome Halpin
-		 *
-		 */
+		
 		@RequestMapping(value= "/addNew", method = RequestMethod.POST)
 		public String displayNewLecturer(@ModelAttribute ("lecturer") @Valid Lecturer lecturer, BindingResult result, 
 				ModelMap model){

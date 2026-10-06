@@ -31,11 +31,7 @@ public class HomeController {
 		return "home";
 	}
 	
-	/**
-	 * @author Niall McCarthy
-	 * This method allows a user to download an empty withdrawl form from the website
-	 *
-	 */
+	
 	@RequestMapping(value = "/home/downloadForm", method = RequestMethod.GET) 
 	public @ResponseBody void downloadDeferralForm(HttpServletRequest request, HttpServletResponse response) {   
 		try {

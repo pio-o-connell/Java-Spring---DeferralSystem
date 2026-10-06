@@ -27,10 +27,7 @@ import com.grouptwo.repository.LecturerDAO;
 
 
 
-/**
- * The Class LecturerTest.
- * @author Dale Cusack
- */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:configuration.xml" })
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
@@ -52,11 +49,7 @@ public class LecturerTest {
 	private StringBuffer verificationErrors = new StringBuffer();
 
 
-	/**
-	 * Set up.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@Before
 	public void setUp() throws Exception {
 		driver = new FirefoxDriver();
@@ -66,11 +59,7 @@ public class LecturerTest {
 
 	}
 
-	/**
-	 * Test create new lecturer test case.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void testCreateNewLecturerTestCase() throws Exception {
@@ -107,11 +96,7 @@ public class LecturerTest {
 
 	}
 
-	/**
-	 * Test modify lecturer.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void testModifyLecturer() throws Exception {
@@ -138,11 +123,7 @@ public class LecturerTest {
 
 	}
 
-	/**
-	 * Test delete lecturer.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void testDeleteLecturer() throws Exception {
@@ -168,11 +149,7 @@ public class LecturerTest {
 	}
 	
 
-	/**
-	 * Test create new lecturer Failed test case.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void testCreateNewLecturerFailedTestCase()  {
@@ -197,11 +174,7 @@ public class LecturerTest {
 
 	}
 	
-	/**
-	 * @author Julia Foden
-	 * @throws InterruptedException
-	 * This test checks that the list of lecturers is correctly displayed, matching the database
-	 */
+	
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void LecturerListAllSeleniumTest() throws InterruptedException{
@@ -218,11 +191,7 @@ public class LecturerTest {
 		assertEquals(numLecDB, numLecOnScreen);
 	}
 	
-	/**
-	 * @author Julia Foden
-	 * @throws InterruptedException
-	 * This test checks that a lecturer cannot be added with a duplicate id
-	 */
+
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void AddLecturerDuplicateIdSeleniumTest() throws InterruptedException{
@@ -255,11 +224,7 @@ public class LecturerTest {
 				driver.findElement(By.xpath("//div[contains(@class, 'message')]/h4")).getText());
 	}
 	
-	/**
-	 * @author Julia Foden
-	 * @throws InterruptedException
-	 * This test checks that a lecturer cannot be added with invalid email address
-	 */
+	
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void AddLecturerInvalidEmailSeleniumTest() throws InterruptedException{
@@ -288,11 +253,7 @@ public class LecturerTest {
 	}
 
 	
-	/**
-	 * @author Julia Foden
-	 * @throws InterruptedException
-	 * This test checks searching for a lecturer by id
-	 */
+
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void SearchLecturerByIdSeleniumTest() throws InterruptedException{
@@ -322,11 +283,7 @@ public class LecturerTest {
 
 	}
 	
-	/**
-	 * @author Julia Foden
-	 * @throws InterruptedException
-	 * This test checks that a lecturer is not deleted when cancel is selected in the popup
-	 */
+	
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void DeleteLecturerCancelSeleniumTest() throws InterruptedException{
@@ -364,11 +321,7 @@ public class LecturerTest {
 
 	}
 
-	/**
-	 * Tear down.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@After
 	public void tearDown() throws Exception {
 		driver.quit();

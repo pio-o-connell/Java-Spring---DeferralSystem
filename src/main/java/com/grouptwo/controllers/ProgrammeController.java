@@ -23,10 +23,7 @@ import com.grouptwo.service.LecturerService;
 import com.grouptwo.service.ProgrammeService;
 import com.grouptwo.service.StudentService;
 
-/**
- * @author Dale Cusack
- * The Class ProgrammeController.
- */
+
 @Controller
 @RequestMapping("/admin/programme")
 public class ProgrammeController {
@@ -41,12 +38,7 @@ public class ProgrammeController {
 	@Autowired
 	DeferralService deferralService;
 
-	/**
-	 * This method will List all programmes.
-	 * @author Dale Cusack
-	 * @param model the model
-	 * @return the string
-	 */
+	
 	@RequestMapping(value="/listall",method=RequestMethod.GET)
 	public String listAll(ModelMap model){
 		List<Programme> progList = programmeService.listProgrammes();//implementing class queries database
@@ -55,11 +47,7 @@ public class ProgrammeController {
 		return "displayProgrammes";//return a view name displayProgrammes
 	}
 
-	/**
-	 * 
-	 * This method will display the details of one programme
-	 * @author Julia Foden
-	 */
+	
 	@RequestMapping(value= "/display/id/{id}", method = RequestMethod.GET)
 	public String displayProgrammeById(@PathVariable String id, ModelMap model){
 		Programme programme = programmeService.getProgramme(id);
@@ -85,13 +73,7 @@ public class ProgrammeController {
 	}
 
 
-	/**
-	 * This method will delete a programme.
-	 *	@author Dale Cusack
-	 * @param programmeId the programme id
-	 * @param model the model
-	 * @return the string
-	 */
+
 	@RequestMapping(value="/delete/{programmeId}",method=RequestMethod.GET)
 	public String delete(@PathVariable String programmeId,ModelMap model){
 		List<Programme> progList =programmeService.deleteProgramme(programmeId);
@@ -100,15 +82,7 @@ public class ProgrammeController {
 		return "displayProgrammes";
 	}
 
-	/**
-	 * 
-	 * This method when programme/addNew entered into url new programme passed to newProgramme
-	 * logical view name with blank instance of Programme
-	 * @author Dale Cusack
-	 * 
-	 * @param model the model
-	 * @return the string
-	 */
+	
 	@RequestMapping(value="/addNew",method=RequestMethod.GET)
 	public String addNewProgramme(ModelMap model){
 		List<Lecturer> listLecturers = lecturerService.listLecturers();
@@ -117,13 +91,7 @@ public class ProgrammeController {
 		return "newProgramme";//passing logical view name and model
 	}
 
-	/**
-	 * This method Retreives info from new programme form.
-	 * @author Dale Cusack
-	 * @param newProgramme the new programme
-	 * @param model the model
-	 * @return the string
-	 */
+	
 	@RequestMapping(value="/addProg",method=RequestMethod.POST)
 	public String displayNewProgramme(@ModelAttribute("newProgramme")  @Valid  Programme newProgramme,BindingResult result, ModelMap model){//a new Programme with key newProgramme passed back
 
@@ -150,25 +118,14 @@ public class ProgrammeController {
 		return "displayProgrammes";//passing logical view name and model
 	}
 
-	/**
-	 * This method removes the programme.
-	 * @author Dale Cusack
-	 * @param model the model
-	 * @return the string
-	 */
+	
 	@RequestMapping(value="/remove",method=RequestMethod.GET)
 	public String removeProgramme(ModelMap model){
 		model.addAttribute("removeProgramme", new Programme());//add this new blank Programme instance to model
 		return "removeProgramme";//passing logical view name and model
 	}
 
-	/**
-	 * This method deletes a programme.
-	 * @author Dale Cusack
-	 * @param removeProgramme the remove programme
-	 * @param model the model
-	 * @return the string
-	 */
+	
 	@RequestMapping(value="/deleteProg",method=RequestMethod.POST)
 	public String deleteProgramme(@ModelAttribute("removeProgramme")   Programme removeProgramme, ModelMap model){//the  Programme with key removeProgramme passed back 
 		model.addAttribute("deletedProg", removeProgramme.getProgrammeId());//add attribute from getProgrammeId() of removeProgramme passed back to key deletedProg
@@ -189,12 +146,7 @@ public class ProgrammeController {
 		return null;
 	}
 
-	/**
-	 * This method gets students id by means of a form
-	 * @author Dale Cusack
-	 * @param model the model
-	 * @return the students Id
-	 */
+	
 	@RequestMapping(value="/ofStudent",method=RequestMethod.GET)
 	public String getStudentsProgrammeForm(ModelMap model){
 		List<Student> studentIdList = studentService.listStudents();
@@ -204,13 +156,7 @@ public class ProgrammeController {
 
 	}
 
-	/**
-	 * This method gets the students programme.
-	 * @author Dale Cusack
-	 * @param student
-	 * @param model
-	 * @return the Students programme
-	 */
+
 	@RequestMapping(value="/studentsProg",method=RequestMethod.POST)
 	public String getStudentsProgramme(@ModelAttribute("progOfStudent")Student student, ModelMap model){//the  Programme with key removeProgramme passed back 
 		model.addAttribute("studentId", student.getStudentId());//add attribute from getProgrammeId() of removeProgramme passed back to key deletedProg
@@ -234,12 +180,7 @@ public class ProgrammeController {
 		return null;
 	}
 
-	/**
-	 * This method displays a form to enter programme id to search for
-	 * @author Dale Cusack
-	 * @param model
-	 * @return 
-	 */
+
 	@RequestMapping(value="/details",method=RequestMethod.GET)
 	public String progDetailsForm(ModelMap model){
 		List<Programme> progList = programmeService.listProgrammes();//implementing class queries database
@@ -248,13 +189,7 @@ public class ProgrammeController {
 		return "aProgForm";
 	}
 
-	/**
-	 * This method displays the programmes details
-	 * @author Dale Cusack
-	 * @param aProgramme
-	 * @param model
-	 * @return programmes details searched for
-	 */
+	
 	@RequestMapping(value="/displayAProg",method=RequestMethod.POST)
 	public String getAProgramme(@ModelAttribute("aProgramme")Programme aProgramme, ModelMap model){//the  Programme with key removeProgramme passed back 
 
@@ -275,24 +210,13 @@ public class ProgrammeController {
 		}
 		return null;
 	}
-	/**
-	 * This method using menu modify function displays a form to enter programme id
-	 * @author Dale Cusack
-	 * @param model
-	 * @return a form
-	 */
+	
 	@RequestMapping(value="/modifyProg",method=RequestMethod.GET)
 	public String modifyProgDetailsForm(ModelMap model){
 		model.addAttribute("aProgToModify", new Programme());
 		return "aModifyProgForm";
 	}
-	/**
-	 * This method after entering programme id in form displays from menu
-	 * @author Dale Cusack
-	 * @param aProgramme
-	 * @param model
-	 * @return searched for programmes details
-	 */
+	
 	@RequestMapping(value="/displayAProgToModify",method=RequestMethod.POST)
 	public String getAProgrammeToModify(@ModelAttribute("aProgToModify")Programme aProgramme, ModelMap model){//the  Programme with key removeProgramme passed back 
 
@@ -314,13 +238,7 @@ public class ProgrammeController {
 		return null;
 	}
 
-	/**
-	 * This method displays the programme after modification
-	 * @author Dale Cusack
-	 * @param modifiedProgramme
-	 * @param model
-	 * @return modified programme
-	 */
+
 	@RequestMapping(value="/modifiedProg",method=RequestMethod.POST)
 	public String displayModifiedProgramme(@ModelAttribute("modifiedProg")Programme modifiedProgramme, ModelMap model){//a new Programme with key newProgramme passed back 
 		model.addAttribute("programmeId",modifiedProgramme.getProgrammeId());//add attribute from getProgrammeId() of newProgramme passed back to key programmeId
@@ -339,13 +257,7 @@ public class ProgrammeController {
 		return "displayProgramme";//passing logical view name and model
 	}
 
-	/**
-	 * This method displays the programme details corresponding to the button
-	 * @author Dale Cusack
-	 * @param programmeId
-	 * @param model
-	 * @return programme details
-	 */
+	
 	@RequestMapping(value="/modifyProgBtn/{programmeId}",method=RequestMethod.GET)
 	public String modifyButton(@PathVariable String programmeId,ModelMap model){
 		try{
@@ -368,13 +280,7 @@ public class ProgrammeController {
 		return "displayTheProgrammeToModifyWithButton";
 	}
 
-	/**
-	 * This method displays the modified programme details corresponding to the modify button
-	 * @author Dale Cusack
-	 * @param programmeId,coordinatorId
-	 * @param model
-	 * @return Modified programme details
-	 */
+	
 	@RequestMapping(value="/modify/programmeId/{programmeId}/coordinatorId/{coordinatorId}",method=RequestMethod.GET)
 	public String displayModifiedProgrammeByButton(@PathVariable String programmeId,@PathVariable String coordinatorId, ModelMap model){
 

@@ -1,0 +1,12 @@
+com\grouptwo\mvc\ProgrammeTest.class
+com\grouptwo\mvc\StudentSeleniumTest.class
+com\grouptwo\repository\ModuleJdbcDaoSupportTest.class
+com\grouptwo\mvc\DeferralTest.class
+com\grouptwo\repository\LecturerJdbcDaoSupportTest.class
+com\grouptwo\repository\ProgrammeJdbcDaoSupportTest.class
+com\grouptwo\repository\StudentJdbcDaoSupportTest.class
+com\grouptwo\repository\RegistrationJdbcDaoSupportTest.class
+com\grouptwo\mvc\LecturerTest.class
+com\grouptwo\mvc\LoginTest.class
+com\grouptwo\repository\DeferralJdbcDaoSupportTest.class
+com\grouptwo\mvc\ModuleTest.class

@@ -26,10 +26,7 @@ import com.grouptwo.repository.ProgrammeDAO;
 
 
 
-/**
- * The Class ProgrammeTest.
- * @author Dale Cusack
- */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:configuration.xml" })
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
@@ -51,11 +48,7 @@ public class ProgrammeTest  {//extends FirefoxDriver
 	private StringBuffer verificationErrors = new StringBuffer();
 
 
-	/**
-	 * Set up.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@Before
 	public void setUp() throws Exception {
 		driver = new FirefoxDriver();
@@ -66,11 +59,7 @@ public class ProgrammeTest  {//extends FirefoxDriver
 	}
 
 
-	/**
-	 * Test create new programme test case.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void testCreateNewProgrammeTestCase() throws Exception {
@@ -111,11 +100,7 @@ public class ProgrammeTest  {//extends FirefoxDriver
 
 	}
 
-	/**
-	 * Test delete programme test case.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void testDeleteProgrammeTestCase() throws Exception {
@@ -138,11 +123,7 @@ public class ProgrammeTest  {//extends FirefoxDriver
 		assertEquals(1,programmesAfterDelete.size());
 	}
 
-	/**
-	 * Test modify programme test case.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void testModifyProgrammeTestCase() throws Exception {
@@ -167,11 +148,7 @@ public class ProgrammeTest  {//extends FirefoxDriver
 		assertEquals( "L001",programmesAfterModify.get(0).getCoordinatorId());
 	}
 
-	/**
-	 * Test create new programme test case.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void testCreateNewProgrammeFailedTestCase()  {
@@ -208,11 +185,7 @@ public class ProgrammeTest  {//extends FirefoxDriver
 
 	}
 
-	/**
-	 * Tear down.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@After
 	public void tearDown() throws Exception {
 		driver.quit();
@@ -223,12 +196,7 @@ public class ProgrammeTest  {//extends FirefoxDriver
 
 	}
 
-	/**
-	 * Checks if is element present.
-	 * @author Dale Cusack
-	 * @param by the by
-	 * @return true, if is element present
-	 */
+	
 	private boolean isElementPresent(By by) {
 		try {
 			driver.findElement(by);

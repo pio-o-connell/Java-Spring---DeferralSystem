@@ -4,11 +4,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-/**
- * Class for Programme also included form validation code
- * @author Dale Cusack
- *
- */
+
 public class Programme {
 	@Size(min=5, max=8, message="A Programme id cannot have less than 5 characters or more than 8")
 	private String programmeId;

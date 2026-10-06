@@ -49,11 +49,7 @@ public class ModuleController {
 		return "displayModules";
 	}
 	
-	/**
-	 * 
-	 * This method will display the details of modules with one id (different CRNs)
-	 * @author Julia Foden
-	 */
+	
 	@RequestMapping(value= "/list/id/{id}", method = RequestMethod.GET)
 	public String displayModuleById(@PathVariable String id, ModelMap model){
 		List<Module> listModules = moduleService.listModulesById(id);
@@ -89,11 +85,7 @@ public class ModuleController {
 	
 	
 	
-	/**
-	 * 
-	 * This method will produce the form to add a module
-	 * @author Julia Foden
-	 */
+
 	@RequestMapping(value= "/addNew", method = RequestMethod.GET)
 	public String addNewModule(ModelMap model){
 		List<Lecturer> listLecturers = lecturerService.listLecturers();
@@ -104,11 +96,7 @@ public class ModuleController {
 		return "newMAdd1";
 	}
 	
-	/**
-	 * 
-	 * This method will create a module and return the list of all modules
-	 * @author Julia Foden
-	 */
+	
 	@RequestMapping(value = "/addModule", method = RequestMethod.POST)
 	public String displayNewModule(@ModelAttribute("newModule") @Valid Module newModule, BindingResult result,ModelMap model) {
 		if (result.hasErrors()) {
@@ -150,10 +138,7 @@ public class ModuleController {
 		
 		}
 	
-	/**
-	 * This method will produce a form to modify a module's name 
-	 *  @author Julia Foden
-	 */
+	
 	@RequestMapping(value="/modify/id/{moduleId}/crn/{crnNumber}", method = RequestMethod.GET)
 	public String updateModuleName(@PathVariable String moduleId ,@PathVariable int crnNumber,ModelMap model){
 		Module moduleModify = moduleService.getModule(moduleId, crnNumber);
@@ -167,10 +152,7 @@ public class ModuleController {
 		return "modifyModule";
 	}
 	
-	/**
-	 * This method will modify a module's name and return a confirmation message and a list of all modules
-	 *  @author Julia Foden
-	 */
+	
 	@RequestMapping(value="/modify/id/{moduleId}/crn/{crnNumber}/name/{name}", method = RequestMethod.GET)
 	public String updateModuleResult(@PathVariable String moduleId,@PathVariable int crnNumber, @PathVariable String name, ModelMap model){
 		try {
@@ -187,11 +169,7 @@ public class ModuleController {
 
 
 	
-	/**
-	 * This method will produce a dropdown menu to search for a module by id 
-	 * @author Julia Foden
-	 *
-	 */
+	
 	@RequestMapping(value= "/advancedlist", method = RequestMethod.GET)
 	public String moduleSearchById(ModelMap model){
 		List<Module> moduleIdList = moduleService.listModules();
@@ -200,11 +178,7 @@ public class ModuleController {
 		return "moduleSearch";
 	}
 	
-	/**
-	 * This method will display the module's details when searched for by Id
-	 * @author Julia Foden
-	 *
-	 */
+	
 	@RequestMapping(value="/moduleSearchResult",method=RequestMethod.POST)
 	public String displayModuleSeachById(@ModelAttribute("module")Module module, ModelMap model){
 		String id = module.getModuleId();

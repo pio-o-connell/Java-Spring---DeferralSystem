@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <unzip src="C:\Users\pio_o\OneDrive\Documents\vscode-projects\DeferralSystem\Java-Spring---DeferralSystem\target/SpringWebProject.war" dest="C:\Users\pio_o\OneDrive\Documents\vscode-projects\DeferralSystem\Java-Spring---DeferralSystem\target/SpringWebProject" overwrite="true"/>
+</target>
+</project>

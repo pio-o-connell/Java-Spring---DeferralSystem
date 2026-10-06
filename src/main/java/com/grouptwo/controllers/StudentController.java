@@ -23,10 +23,7 @@ import com.grouptwo.service.ProgrammeService;
 import com.grouptwo.service.StudentService;
 
 
-/**
- * @author Julia Foden
- *
- */
+
 
 @Controller
 @RequestMapping("/admin/student")
@@ -45,11 +42,7 @@ public class StudentController {
 		@Autowired
 		DeferralService deferralService;
 		
-		/**
-		 * 
-		 * This method will list all students
-		 * @author Julia Foden
-		 */
+		
 		@RequestMapping(value="/listall", method = RequestMethod.GET) 
 		public String listAll(ModelMap model) {			
 				
@@ -59,11 +52,7 @@ public class StudentController {
 			    return "displayStudents";			
 			} 
 		
-		/**
-		 * 
-		 * This method will display the details of one student
-		 * @author Julia Foden
-		 */
+		
 		@RequestMapping(value= "/display/id/{id}", method = RequestMethod.GET)
 		public String displayStudentById(@PathVariable String id, ModelMap model){
 			//get student by id and get their details
@@ -112,11 +101,7 @@ public class StudentController {
 			return "displayStudent";
 		}
 		
-		/**
-		 *
-		 * This method will delete one student and return a confirmation message 
-		 *  @author Julia Foden
-		 */
+		
 		@RequestMapping(value= "/delete/id/{id}", method = RequestMethod.GET)
 		public String deleteStudentById(@PathVariable String id, ModelMap model){
 			Student student = studentService.getStudent(id);
@@ -127,10 +112,7 @@ public class StudentController {
 			return "displayStudents";
 		}
 		
-		/**
-		 * This method will produce a form to modify a student's details 
-		 *  @author Julia Foden
-		 */
+	
 		@RequestMapping(value= "/modify/id/{id}", method = RequestMethod.GET)
 		public String modifyStudent(@PathVariable String id, ModelMap model){
 			Student studentModify = studentService.getStudent(id);
@@ -144,10 +126,7 @@ public class StudentController {
 			return "modifyStudentForm";
 		}
 		
-		/**
-		 * This method will modify the student's last name and then display the students list with a confirmation message 
-		 * @author Julia Foden
-		 */		
+		
 		@RequestMapping(value="/modify/id/{studentId}/lastname/{lastName}", method = RequestMethod.GET)
 		public String displayModifiedStudent(@PathVariable String studentId, @PathVariable String lastName, ModelMap model){
 			try {
@@ -163,22 +142,14 @@ public class StudentController {
 		}
 		
 		
-		/**
-		 * 
-		 * This method will produce the form to add a student
-		 * @author Julia Foden
-		 */
+	
 		@RequestMapping(value= "/addNew", method = RequestMethod.GET)
 		public String addNewStudent(ModelMap model){
 			model.addAttribute("student", new Student());
 			return "newStudent";
 		}
 		
-		/**
-		 * This method will add a new student to the database and return  confirmation message and the list of all students
-		 * @author Julia Foden
-		 *
-		 */
+		
 		@RequestMapping(value= "/addNew", method = RequestMethod.POST)
 		public String displayNewStudent(@ModelAttribute ("student") @Valid Student student, BindingResult result, 
 				ModelMap model){
@@ -208,11 +179,7 @@ public class StudentController {
 			return "displayStudents";
 		}
 		
-		/**
-		 * This method will produce a dropdown menu to search for a student by id 
-		 * @author Julia Foden
-		 *
-		 */
+		
 		@RequestMapping(value= "/advancedlist", method = RequestMethod.GET)
 		public String studentSearchById(ModelMap model){
 			List<Student> studentIdList = studentService.listStudents();
@@ -221,11 +188,7 @@ public class StudentController {
 			return "studentSearch";
 		}
 		
-		/**
-		 * This method will display the student's details when searched for by Id
-		 * @author Julia Foden
-		 *
-		 */
+		
 		@RequestMapping(value="/studentSearchResult",method=RequestMethod.POST)
 		public String displayStudentSeachById(@ModelAttribute("student")Student student, ModelMap model){
 			String id = student.getStudentId();

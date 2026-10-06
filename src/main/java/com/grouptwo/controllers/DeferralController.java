@@ -61,11 +61,7 @@ public class DeferralController {
 	private int crnNumber;
 
 	
-	/**
-	 * @author Niall McCarthy
-	 * This method will list all deferrals
-	 *
-	 */
+	
 	@RequestMapping(value = "/listall", method = RequestMethod.GET)
 	public String listAll(ModelMap model) {
 		Date date = new java.util.Date();
@@ -76,11 +72,7 @@ public class DeferralController {
 		return "displayDeferrals";
 	}
 	
-	/**
-	 * @author Julia Foden
-	 * This method will list all deferrals for a programme
-	 *
-	 */
+	
 	@RequestMapping(value = "/list/id/{programmeId}", method = RequestMethod.GET)
 	public String listDeferralsByProgrammeId(@PathVariable String programmeId, ModelMap model) {
 		List<Deferral> listDeferrals = deferralService.listDeferralsByProgramme(programmeId);
@@ -88,11 +80,7 @@ public class DeferralController {
 		return "displayDeferrals";
 	}
 	
-	/**
-	 * @author Julia Foden
-	 * This method will list all deferrals for a module
-	 *
-	 */
+	
 	@RequestMapping(value = "/list/moduleId/{moduleId}", method = RequestMethod.GET)
 	public String listDeferralsByModuleId(@PathVariable String moduleId, ModelMap model) {
 		List<Deferral> listDeferrals = deferralService.listDeferralsByModule(moduleId);
@@ -100,11 +88,7 @@ public class DeferralController {
 		return "displayDeferrals";
 	}
 	
-	/**
-	 * @author Julia Foden
-	 * This method will list all deferrals for a coordinator
-	 *
-	 */
+	
 	@RequestMapping(value = "/list/coordinatorId/{coordinatorId}", method = RequestMethod.GET)
 	public String listDeferralsByCoordinatorId(@PathVariable String coordinatorId, ModelMap model){
 		List<Deferral> listDeferrals = deferralService.listDeferralsByCoordinatorId(coordinatorId);
@@ -113,11 +97,8 @@ public class DeferralController {
 		return "displayDeferrals";
 	}
 	
-	/**
-	 * @author Julia Foden
-	 * This method will list all unapproved deferrals for a coordinator
-	 *
-	 */
+	
+	 
 	@RequestMapping(value = "/list/unapproved/coordinatorId/{coordinatorId}", method = RequestMethod.GET)
 	public String listUnapprovedDeferralsByCoordinatorId(@PathVariable String coordinatorId, ModelMap model){
 		List<Deferral> listDeferrals = deferralService.listUnapprovedDeferralsByCoordinatorId(coordinatorId);
@@ -127,11 +108,8 @@ public class DeferralController {
 	}
 	
 	
-	/**
-	 * @author Niall McCarthy
-	 * This method is invoked when the coordinator, confirms the approval on a deferral entry.
-	 *
-	 */
+
+	 
 	@RequestMapping(value = "/listall/{moduleId}/{studentId}", method = RequestMethod.GET)
 	public String listApprovedDeferrals(@PathVariable String moduleId,@PathVariable String studentId, ModelMap model) {
 		Date date = new java.util.Date();
@@ -143,20 +121,12 @@ public class DeferralController {
 	}
 	
 
-	/**
-	 * @author Niall McCarthy
-	 * This method will display a View for the user to enter his/her student Id
-	 *
-	 */
 	@RequestMapping(value = "/advancedlist", method = RequestMethod.GET)
 	public String advancedSearch() {
 		return "displayDeferralsByStudent";
 	}
 	
 	
-	/* Once the user enters their student Id, this method will display a
-	*  a list of all the student's deferrals	
-	*/
 	@RequestMapping(value = "/advancedlist/studentId/{studentId}", method = RequestMethod.GET)
 	public String listDeferralsByStudent(@PathVariable String studentId,
 			ModelMap model) {
@@ -170,11 +140,7 @@ public class DeferralController {
 	
 	
 	
-	/**
-	 * @author Niall McCarthy
-	 * These following 3x methods will create a Deferral for a Student's Module
-	 *
-	 */
+	
 	
 	/*This method will display a View for the user to enter his/her student Id*/
 	
@@ -311,11 +277,7 @@ public class DeferralController {
 			}
 	}
 	
-	/**
-	 * @author Niall McCarthy
-	 * These following 3x methods will create a Deferral for a Student's Programme
-	 *
-	 */
+
 	
 	/*This method will display a View for the user to enter his/her student Id*/
 	
@@ -434,11 +396,7 @@ public class DeferralController {
 
 	}
 	
-	/**
-	 * @author Niall McCarthy
-	 * This method will delete a Deferral entry
-	 *
-	 */
+
 	@RequestMapping(value= "/delete/id/{id}", method = RequestMethod.GET)
 	public String deleteStudentById(@PathVariable int id, ModelMap model){
 		Deferral deferral = deferralService.getDeferral(id);
@@ -453,11 +411,7 @@ public class DeferralController {
 		return "displayDeferral";
 	}
 	
-	/**
-	 * @author Niall McCarthy
-	 * These methods will modify a Deferral entry's Approval
-	 *
-	 */
+
 	@RequestMapping(value = "/modify/id/{id}", method = RequestMethod.GET) 
 	public String modifyDeferral(@PathVariable int id, ModelMap model) { 
 		Deferral deferralModify=deferralService.getDeferral(id);
@@ -486,11 +440,7 @@ public class DeferralController {
 				
 	}
 	
-	/**
-	 * @author Niall McCarthy
-	 * This method allows a lecturer to download a completed withdrawl form submitted by a student
-	 *
-	 */
+	
 	
 	@RequestMapping(value = "/downloadForm/id/{id}", method = RequestMethod.GET) 
 	public @ResponseBody void downloadWithdrawalForm(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {   

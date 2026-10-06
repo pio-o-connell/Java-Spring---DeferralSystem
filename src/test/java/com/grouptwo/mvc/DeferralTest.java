@@ -30,10 +30,7 @@ import com.grouptwo.repository.DeferralDAO;
 
 
 // TODO: Auto-generated Javadoc
-/**
- * @author Dale Cusack
- * The Class DeferralTest.
- */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:configuration.xml" })
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
@@ -53,11 +50,7 @@ public class DeferralTest {
 	/** The verification errors. */
 	private StringBuffer verificationErrors = new StringBuffer();
 
-	  /**
-  	 * Set up.
-  	 *@author Dale Cusack
-  	 * @throws Exception the exception
-  	 */
+	 
   	@Before
 	  public void setUp() throws Exception {
 		FirefoxProfile fxProfile = new FirefoxProfile();
@@ -68,11 +61,7 @@ public class DeferralTest {
 	    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	  }
 	
-	  /**
-  	 * Test create deferral.
-  	 * @author Dale Cusack
-  	 * @throws Exception the exception
-  	 */
+	 
   	@Test
 	  @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	  public void testCreateDeferral() throws Exception {
@@ -89,10 +78,10 @@ public class DeferralTest {
 
 	    driver.findElement(By.id("file")).click();
 	    WebElement elem = driver.findElement(By.cssSelector("input[type='file']"));
-	    elem.sendKeys("C:\\Users\\Dale\\Downloads\\Withdrawal_Form.pdf");
+	    elem.sendKeys("C:\\Users\\Pio\\Downloads\\Withdrawal_Form.pdf");
 	    
 	    //Setting file path to StringSelection Object in clipboard
-	    StringSelection ss=new StringSelection("C:\\Users\\Dale\\Downloads\\Withdrawal_Form.pdf");
+	    StringSelection ss=new StringSelection("C:\\Users\\Pio\\Downloads\\Withdrawal_Form.pdf");
 	    //file path content in clipboard
 	    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
 	  
@@ -130,11 +119,8 @@ public class DeferralTest {
 		assertEquals("KCMSD_Y5",studentDeferrals.get(0).getProgrammeId());
 	  }
 	
-	  /**
-  	 * Test create deferral prog.
-  	 * @author Dale Cusack
-  	 * @throws Exception the exception
-  	 */
+	
+
   	@Test
 	  @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	  public void testCreateDeferralProg() throws Exception {
@@ -149,9 +135,9 @@ public class DeferralTest {
 	    
 	    driver.findElement(By.id("file")).click();
 	    WebElement elem = driver.findElement(By.cssSelector("input[type='file']"));
-	    elem.sendKeys("C:\\Users\\Dale\\Downloads\\Withdrawal_Form.pdf");
+	    elem.sendKeys("C:\\Users\\Pio\\Downloads\\Withdrawal_Form.pdf");
 	    
-	    StringSelection ss=new StringSelection("C:\\Users\\Dale\\Downloads\\Withdrawal_Form.pdf");
+	    StringSelection ss=new StringSelection("C:\\Users\\Pio\\Downloads\\Withdrawal_Form.pdf");
 	    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null); 
 	    
 	    Robot robot = new Robot();
@@ -176,11 +162,7 @@ public class DeferralTest {
 		assertEquals(3, rowCount);
 	  }
 	  
-	   /**
-   	 * Tear down.
-   	 * @author Dale Cusack
-   	 * @throws Exception the exception
-   	 */
+	
    	@After
 	   public void tearDown() throws Exception {
 	    driver.quit();

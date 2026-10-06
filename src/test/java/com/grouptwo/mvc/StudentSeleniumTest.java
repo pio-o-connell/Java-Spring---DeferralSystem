@@ -52,11 +52,7 @@ public class StudentSeleniumTest {
 	   
 	  }
 	 
-	 /**
-	  * @author Julia Foden
-	  * @throws InterruptedException
-	  * This test checks that the list of students is correctly displayed
-	  */
+	 
 	 @Test
 	 @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	 public void StudentListAllSeleniumTest() throws InterruptedException{
@@ -74,11 +70,7 @@ public class StudentSeleniumTest {
 	 }
 	 
 	 
-	 /**
-	  * @author Julia Foden
-	  * @throws InterruptedException
-	  * This test checks that a student can be added
-	  */
+	
 	 @Test
 	 @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	 public void AddNewStudentSeleniumTest() throws InterruptedException{
@@ -120,11 +112,7 @@ public class StudentSeleniumTest {
 		 	 
 		 }
 	 
-	 /**
-	  * @author Julia Foden
-	  * @throws InterruptedException
-	  * This test checks that a student cannot be added with a duplicate id
-	  */
+	
 	 @Test
 	 @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	 public void AddStudentDuplicateIdSeleniumTest() throws InterruptedException{
@@ -157,11 +145,7 @@ public class StudentSeleniumTest {
 				 driver.findElement(By.xpath("//div[contains(@class, 'message')]/h4")).getText());
 	 }
 	 
-	 /**
-	  * @author Julia Foden
-	  * @throws InterruptedException
-	  * This test checks that a student cannot be added with names which are not valid
-	  */
+
 	 @Test
 	 @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	 public void AddStudentInvalidSeleniumTest() throws InterruptedException{
@@ -191,11 +175,7 @@ public class StudentSeleniumTest {
 
 	 }
 	 
-	 /**
-	  * @author Julia Foden
-	  * @throws InterruptedException
-	  * This test checks that a student cannot be added with invalid email address
-	  */
+	
 	 @Test
 	 @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	 public void AddStudentInvalidEmailSeleniumTest() throws InterruptedException{
@@ -223,11 +203,7 @@ public class StudentSeleniumTest {
 		 
 	 }
 	 
-	 /**
-	  * @author Julia Foden
-	  * @throws InterruptedException
-	  * This test checks searching for a student by id
-	  */
+	
 	 @Test
 	 @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	 public void SearchStudentByIdSeleniumTest() throws InterruptedException{
@@ -265,11 +241,7 @@ public class StudentSeleniumTest {
 
 	 }
 	 
-	 /**
-	  * @author Julia Foden
-	  * @throws InterruptedException
-	  * This test checks that a student can be deleted
-	  */
+	
 	 @Test
 	 @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	 public void DeleteStudentSeleniumTest() throws InterruptedException{
@@ -306,11 +278,7 @@ public class StudentSeleniumTest {
 		 assertFalse(idList.contains(idDelete)); //testing that no student exists with id just deleted
 	 }
 	 
-	 /**
-	  * @author Julia Foden
-	  * @throws InterruptedException
-	  * This test checks that a student is not deleted when Cancel is selected in the popup
-	  */
+
 	 @Test
 	 @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	 public void DeleteStudentCancelSeleniumTest() throws InterruptedException{
@@ -347,12 +315,7 @@ public class StudentSeleniumTest {
 		
 	 }
 	 
-	 /**
-	  * @author Julia Foden
-	  * @throws InterruptedException
-	  * This test checks first that a student's details as displayed match the DB and then
-	  * that a student's last name can be modified
-	  */
+	
 	 @Test
 	 @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	 public void ModifyStudentSeleniumTest() throws InterruptedException{
@@ -389,11 +352,7 @@ public class StudentSeleniumTest {
 		 assertEquals("Walsh", studentDAO.getStudent(idModify).getLastName()); //checking that last name has been modified in DB
 	 }
 	 
-	 /**
-	  * @author Julia Foden
-	  * @throws InterruptedException
-	  * This test checks that a student's last name can be modified with an invalid last name
-	  */
+	
 	 @Test
 	 @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	 public void ModifyLongNameStudentSeleniumTest() throws InterruptedException{
@@ -434,11 +393,7 @@ public class StudentSeleniumTest {
 	 
 	 }
 	 
-	 /**
-	  * @author Julia Foden
-	  * @throws InterruptedException
-	  * This test checks that a student's programme and module(s) are displayed correctly
-	  */
+	 
 	 @Test
 	 @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	 public void ViewStudentProgrammeModulesSeleniumTest() throws InterruptedException{
@@ -459,11 +414,7 @@ public class StudentSeleniumTest {
 		 
 	 }
 	 
-	 /**
-	  * @author Julia Foden
-	  * @throws InterruptedException
-	  * This test checks that a student's deferrals are displayed correctly
-	  */
+	
 	 @Test
 	 @DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	 public void ViewStudentDeferralsSeleniumTest() throws InterruptedException{

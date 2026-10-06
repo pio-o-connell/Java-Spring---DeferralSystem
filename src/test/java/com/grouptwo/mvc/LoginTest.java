@@ -33,10 +33,7 @@ import com.grouptwo.repository.ProgrammeDAO;
 
 
 // TODO: Auto-generated Javadoc
-/**
- * The Class LoginTest.
- * @author Dale Cusack
- */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:configuration.xml" })
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
@@ -135,12 +132,7 @@ public class LoginTest {
 		}
 	}
 
-	/**
-	 * Checks if is element present.
-	 * @author Dale Cusack
-	 * @param by the by
-	 * @return true, if is element present
-	 */
+	
 	private boolean isElementPresent(By by) {
 		try {
 			driver.findElement(by);

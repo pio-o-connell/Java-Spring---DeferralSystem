@@ -26,10 +26,7 @@ import com.grouptwo.repository.ModuleDAO;
 
 
 
-/**
- * The Class ModuleTest.
- * @author Dale Cusack
- */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:configuration.xml" })
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
@@ -51,11 +48,7 @@ public class ModuleTest {
 	/** The verification errors. */
 	private StringBuffer verificationErrors = new StringBuffer();
 
-	/**
-	 * Set up.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@Before
 	public void setUp() throws Exception {
 		driver = new FirefoxDriver();
@@ -64,11 +57,7 @@ public class ModuleTest {
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	}
 
-	/**
-	 * Test create new module.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void testCreateNewModule() throws Exception {
@@ -107,11 +96,7 @@ public class ModuleTest {
 		assertEquals(expectedModuleLecturer, actualModuleLecturer);
 	}
 
-	/**
-	 * Test modify module.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void testModifyModule() throws Exception {
@@ -141,11 +126,7 @@ public class ModuleTest {
 		assertEquals(expectedModuleLecturer, actualModuleLecturer);
 	}
 
-	/**
-	 * Test delete module.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void testDeleteModule() throws Exception {
@@ -169,11 +150,7 @@ public class ModuleTest {
 
 	}
 
-	/**
-	 * Test create new module.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@Test
 	@DatabaseSetup(value = "classpath:databaseEntries.xml", type = DatabaseOperation.CLEAN_INSERT)
 	public void testCreateNewModuleFailed() throws Exception {
@@ -199,11 +176,7 @@ public class ModuleTest {
 
 	}
 
-	/**
-	 * Tear down.
-	 * @author Dale Cusack
-	 * @throws Exception the exception
-	 */
+	
 	@After
 	public void tearDown() throws Exception {
 		driver.quit();
