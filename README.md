@@ -1,5 +1,9 @@
 # DeferralSystem
 
+> **Project status: Discontinued**
+>
+> This repository is retained as an archive of the original project. Development has moved to [Deferment](https://github.com/pio-o-connell/Deferment), its successor project. Please refer to that repository for the current development direction.
+
 ## Overview
 
 DeferralSystem is a web application for managing student deferrals within an academic programme.
@@ -127,9 +131,8 @@ mvn package
 
 The repository includes a `Procfile` and an embedded Tomcat launcher for running the packaged web application on Heroku-style environments. The application uses the `PORT` environment variable when it is available and otherwise defaults to port `8080`.
 
-## Author
-
-**Pio O'Connell**
+## Author**
+This is an archived student group project. I have retained the original repository, but the implementation was developed collaboratively by my classmates. It is presented here faithfully for reference purposes and is not claimed as my sole original work.
 
 ## Repository
 
