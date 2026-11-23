@@ -132,7 +132,7 @@ mvn package
 The repository includes a `Procfile` and an embedded Tomcat launcher for running the packaged web application on Heroku-style environments. The application uses the `PORT` environment variable when it is available and otherwise defaults to port `8080`.
 
 ## Author**
-This is an archived student group project. I have retained the original repository, but the implementation was developed collaboratively by my classmates. It is presented here faithfully for reference purposes and is not claimed as my sole original work.
+This is an archived student group project. I have retained the original repository, but the implementation was developed collaboratively by our student group. It is presented here faithfully for reference purposes and is not claimed as my sole original work.
 
 ## Repository
 
